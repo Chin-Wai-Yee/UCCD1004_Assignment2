@@ -28,6 +28,7 @@ struct Student {
 int split(string, char, string (&)[]);
 void readFile(string, Student(&)[] , int&);
 void writeFile(string, Student[], int);
+void displayStudentInfo(Student[], int);
 
 // Main function
 int main() {
@@ -35,10 +36,6 @@ int main() {
     int student_num;
     readFile("students_list.txt", students, student_num); // Current number of students in the array
 
-    // Display all students in the array
-    for (int i = 0; i < student_num - 1; i++){
-        cout << students[i].course[0].name << endl;
-    }
 
     writeFile("students_list_output.txt", students, student_num);
 
@@ -113,6 +110,9 @@ void readFile(string file_name, Student (&students)[], int& n) {
         students[n].course_num = i;
         n++;
     }
+
+    displayStudentInfo(students, n);
+
     file.close();
 }
 
@@ -149,4 +149,24 @@ void writeFile(string file_name, Student students[], int student_num) {
         }
     }
     file.close();
+}
+
+/**
+ * @brief Display student info
+ * @param students Student array to display
+ * @param student_num Number of students
+*/
+void displayStudentInfo(Student students[], int student_num) {
+    // display suitable header and loop all students to display their student id in width 10, name  in width 50 and number of courses taken
+    cout << "Student Info" << endl;
+    cout << "===========================" << endl;
+    cout << "Number of Students: " << student_num << endl;
+    cout << endl;
+    cout << "Student Info" << endl;
+    cout << "===========================" << endl;
+    cout << "Student ID\tStudent Name\tNumber of Courses Taken" << endl;
+    for (int i = 0; i < student_num; i++) {
+        cout << students[i].id << "\t\t" << students[i].name << "\t\t" << students[i].course_num << endl;
+    }
+
 }
