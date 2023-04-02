@@ -12,6 +12,7 @@ struct Course {
     string code; // course code (etc: UCCD1004)
     string name; // course name (etc: Programming Practices)
     string gred; // course gred (etc: A+)
+    int credit_hour; // course credit hour (etc: 4)
 };
 
 /// @brief Struct representing student
@@ -21,21 +22,22 @@ struct Student {
     string password; // Student password in hash
     int course_num; // number of course taken
     Course course[MAX_COURSES]; // Taken courses in array
+    int total_credit_hour; // Total credit hour
 };
 
 // Function declaration
 
-int split(string, char, string (&)[]);
-void readFile(string, Student(&)[] , int&);
+int split(string, char, string []);
+void readFile(string, Student[] , int&);
 void writeFile(string, Student[], int);
 void displayStudentInfo(Student[], int);
+
 
 // Main function
 int main() {
     Student students[MAX_STUDENTS]; // Array to store student data
     int student_num;
     readFile("students_list.txt", students, student_num); // Current number of students in the array
-
 
     writeFile("students_list_output.txt", students, student_num);
 
@@ -49,7 +51,7 @@ int main() {
  * @param substr_arr Output string array that contains the substrings
  * @return Numer of substring
 */
-int split(string str, char delim, string (&substr_arr)[]) {
+int split(string str, char delim, string substr_arr[]) {
 
     int n = 0; // number of substring
     int length = str.size(); // length of string
@@ -82,7 +84,7 @@ int split(string str, char delim, string (&substr_arr)[]) {
  * @param i Total number of courses
  * 
 */
-void readFile(string file_name, Student (&students)[], int& n) {
+void readFile(string file_name, Student students[], int& n) {
     fstream file;
     n = 0; // number of student
     string courses;
@@ -100,18 +102,20 @@ void readFile(string file_name, Student (&students)[], int& n) {
         getline(file, courses);
         string courses_arr[MAX_COURSES];
         int i = split(courses, '|', courses_arr);
+        int total_credit_hour = 0;
         for (int j = 0; j < i; j++) { // loop every course of student
             string course_info[3];
             split(courses_arr[j], ',', course_info);
             students[n].course[j].code = course_info[0];
             students[n].course[j].name = course_info[1];
             students[n].course[j].gred = course_info[2];
+            students[n].course[j].credit_hour = int(students[n].course[j].code[8]);
+            total_credit_hour += students[n].course[j].credit_hour;
         }
         students[n].course_num = i;
+        students[n].total_credit_hour = total_credit_hour;
         n++;
     }
-
-    displayStudentInfo(students, n);
 
     file.close();
 }
@@ -149,24 +153,4 @@ void writeFile(string file_name, Student students[], int student_num) {
         }
     }
     file.close();
-}
-
-/**
- * @brief Display student info
- * @param students Student array to display
- * @param student_num Number of students
-*/
-void displayStudentInfo(Student students[], int student_num) {
-    // display suitable header and loop all students to display their student id in width 10, name  in width 50 and number of courses taken
-    cout << "Student Info" << endl;
-    cout << "===========================" << endl;
-    cout << "Number of Students: " << student_num << endl;
-    cout << endl;
-    cout << "Student Info" << endl;
-    cout << "===========================" << endl;
-    cout << "Student ID\tStudent Name\tNumber of Courses Taken" << endl;
-    for (int i = 0; i < student_num; i++) {
-        cout << students[i].id << "\t\t" << students[i].name << "\t\t" << students[i].course_num << endl;
-    }
-
 }
