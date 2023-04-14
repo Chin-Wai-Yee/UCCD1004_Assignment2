@@ -25,12 +25,20 @@ struct Student {
     int total_credit_hour; // Total credit hour
 };
 
+struct Lecturer {
+    string id; // Lecturer id
+    string name; // Lecturer name
+    string password; // Lecturer password in hash
+};
+
 // Function declaration
 
 int split(string, char, string []);
 void readFile(string, Student[] , int&);
 void writeFile(string, Student[], int);
 void displayStudentInfo(Student[], int);
+void mainMenu(bool&);
+void studentMenu();
 
 
 // Main function
@@ -38,10 +46,94 @@ int main() {
     Student students[MAX_STUDENTS]; // Array to store student data
     int student_num;
     readFile("students_list.txt", students, student_num); // Current number of students in the array
-
+    bool exit = false;
+    // while (!exit) {
+    //     mainMenu(exit);
+    //     system("pause");
+    // }
     writeFile("students_list_output.txt", students, student_num);
 
     return 0;
+}
+
+void mainMenu(bool& exit) {
+
+    system("cls");
+    cout << "Welcome to Student Management System" << endl;
+    cout << "Please select your identity" << endl;
+    cout << "1. Student" << endl;
+    cout << "2. Lecturer" << endl;
+    cout << "3. Admin" << endl;
+    cout << endl;
+    cout << "0. Exit" << endl;
+
+    cout << "Enter your option : ";
+    string option;
+    getline(cin, option);
+    if (option == "1") {
+        studentMenu();
+    }
+    else if (option == "2") {
+        // courseMenu();
+    }
+    else if (option == "3") {
+        // adminMenu();
+    }
+    else if (option == "0") {
+        cout << "Exiting..." << endl;
+        exit = true;
+    }
+    else {
+        cout << "Invalid option" << endl;
+    }
+}
+
+
+void courseMenu(Course courses[], int& course_num, bool is_lecturer = false) {
+
+    system("cls");
+    cout << "Course Management System" << endl;
+    cout << "Please enter your option" << endl;
+    cout << "1. Print course(s) information to file" << endl;
+
+    if (is_lecturer) {
+        cout << "2. Add course" << endl;
+        cout << "3. Edit course" << endl;
+        cout << "4. Delete course" << endl;
+    }
+
+    cout << endl;
+    cout << "0. Exit" << endl;
+
+    string option;
+    getline(cin, option);
+    if (option == "1") {
+        // printCourseInfo(courses, course_num);
+    }
+    else if (option == "2") {
+        // addCourse(courses, course_num);
+    }
+    else if (option == "3") {
+        // editCourse(courses, course_num);
+    }
+    else if (option == "0") {
+        cout << "Exiting..." << endl;
+    }
+    else {
+        cout << "Invalid option" << endl;
+    }
+
+}
+
+void studentMenu() {
+    system("cls");
+    cout << "Student Management System" << endl;
+    cout << "1. Add student" << endl;
+    cout << "2. Edit student" << endl;
+    cout << "3. Delete student" << endl;
+    cout << "4. View student" << endl;
+    cout << endl;
+    cout << "0. Exit" << endl;
 }
 
 /**
@@ -76,6 +168,10 @@ int split(string str, char delim, string substr_arr[]) {
     return n;
 }
 
+bool login() {
+    return false;
+}
+
 /**
  * @brief Read stuents info from students file
  * @param file_name Input file name
@@ -96,23 +192,20 @@ void readFile(string file_name, Student students[], int& n) {
     while (!file.eof()) {
         getline(file, students[n].id, '|');
         getline(file, students[n].name, '|');
-        getline(file, students[n].password);
+        getline(file, students[n].password, '|');
+        file >> students[n].course_num;
 
         // read course info
         getline(file, courses);
         string courses_arr[MAX_COURSES];
-        int i = split(courses, '|', courses_arr);
         int total_credit_hour = 0;
-        for (int j = 0; j < i; j++) { // loop every course of student
-            string course_info[3];
-            split(courses_arr[j], ',', course_info);
-            students[n].course[j].code = course_info[0];
-            students[n].course[j].name = course_info[1];
-            students[n].course[j].gred = course_info[2];
+        for (int j = 0; j < students[n].course_num ; j++) { // loop every course of student
+            getline(file, students[n].course[j].code, '|');
+            getline(file, students[n].course[j].name, '|');
+            getline(file, students[n].course[j].gred);
             students[n].course[j].credit_hour = int(students[n].course[j].code[8]);
             total_credit_hour += students[n].course[j].credit_hour;
         }
-        students[n].course_num = i;
         students[n].total_credit_hour = total_credit_hour;
         n++;
     }
@@ -127,23 +220,21 @@ void readFile(string file_name, Student students[], int& n) {
  * @param student_num Number of students
 */
 void writeFile(string file_name, Student students[], int student_num) {
-    fstream file;
-    file.open(file_name, ios::out);
+
+    fstream file(file_name, ios::out);
 
     for (int i = 0; i < student_num; i++) {
         // write student info
         file << students[i].id << '|';
         file << students[i].name << '|';
-        file << students[i].password << endl;
+        file << students[i].password << '|';
+        file << students[i].course_num;
         //write course info
         for (int j = 0; j < students[i].course_num; j++) {
-            file << students[i].course[j].code << ',';
-            file << students[i].course[j].name << ',';
+            file << endl;
+            file << students[i].course[j].code << '|';
+            file << students[i].course[j].name << '|';
             file << students[i].course[j].gred;
-            // if the course is not wirte delimiter char
-            if (j != students[i].course_num - 1) {
-                file << '|';
-            }
         }
         // end of the student & course info
 

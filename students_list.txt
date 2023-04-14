@@ -1,10 +1,29 @@
-2103133|Wong Kok Kok|abc
-FHCT1012,Computing Technology,B|FHMM1014,Mathematics I,F|FHSB1214,Biology I,A+|FHSC1014,Mechanics,C
-2101234|Li Lei|abc
-FHCT1012,Computing Technology,B+|FHMM1014,Mathematics I,B-|FHSB1214,Biology I,A-|FHSC1014,Mechanics,C+
-2106720|Han Mei Mei|abc
-FHMM1014,Mathematics I,A
-2103370|Chin Wai Yee|abc
-FHBM1114,Management,A|FHCT1012,Computing Technology,A|FHCT1014,Introduction to Data Analytics,A-|FHCT1024,Programming Concepts and Design,A+|FHEL1012,English for Academic Study,B+|FHMM1014,Mathematics I,A|FHMM1022,Effective Communication Skills,A-|FHMM1024,Mathematics II,C+|FHMM1034,Mathematics III,A|FHSB1214,Biology I,A+|FHSC1014,Mechanics ,A|FHSC1024,Thermodynamics and Electromagnetism,F|FHSC1114,Physical Chemistry,A|FHSC1124,Organic Chemistry,A-
-2114514|Li Lao Han|abc
-FHCT1012,Computing Technology,A
+2103133|Wong Kok Kok|abc|4
+FHCT1012|Computing Technology|B
+FHMM1014|Mathematics I|F
+FHSB1214|Biology I|A+
+FHSC1014|Mechanics|C
+2101234|Li Lei|abc|4
+FHCT1012|Computing Technology|B+
+FHMM1014|Mathematics I|B-
+FHSB1214|Biology I|A-
+FHSC1014|Mechanics|C+
+2106720|Han Mei Mei|abc|1
+FHMM1014|Mathematics I|A
+2103370|Chin Wai Yee|abc|13
+FHBM1114|Management|A
+FHCT1012|Computing Technology|A
+FHCT1014|Introduction to Data Analytics|A-
+FHCT1024|Programming Concepts and Design|A+
+FHEL1012|English for Academic Study|B+
+FHMM1014|Mathematics I|A
+FHMM1022|Effective Communication Skills|A-
+FHMM1024|Mathematics II|C+
+FHMM1034|Mathematics III|A
+FHSB1214|Biology I|A+
+FHSC1014|Mechanics |A
+FHSC1024|Thermodynamics and Electromagnetism|F
+FHSC1114|Physical Chemistry|A
+2114514|Li Lao Han|abc|1
+FHCT1012|Computing Technology|A
+1234567|Ni Hao A||0
