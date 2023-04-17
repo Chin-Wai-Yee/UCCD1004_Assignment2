@@ -248,16 +248,17 @@ void courseMenu(People student, Course courses[], bool is_lecturer) {
         getline(cin, option);
         if (option == "1") {
             cout << "The function is not ready yet~";
-            // printCourseInfo(courses, course_num);
         }
-        else if (option == "2") {
-            addCourseInfo(courses, course_num, "Do you want to add a new course");
-        }
-        else if (option == "3") {
-            addCourseInfo(courses, course_num, "Do you want to edit a course", true);
-        }
-        else if (option == "4") {
-            deleteCourse(courses, course_num);
+        else if (is_lecturer) {
+            if (option == "2") {
+                addCourseInfo(courses, course_num, "Do you want to add a new course");
+            }
+            else if (option == "3") {
+                addCourseInfo(courses, course_num, "Do you want to edit a course", true);
+            }
+            else if (option == "4") {
+                deleteCourse(courses, course_num);
+            }
         }
         else if (option == "0") {
             cout << "Exiting..." << endl;
