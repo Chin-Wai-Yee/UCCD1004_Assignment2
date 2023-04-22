@@ -1,0 +1,5 @@
+rajeshtan|Rajesh Tan|password123
+liewxiuying|Liew Xiu Ying|securepass456
+muhamadaziz|Muhamad Aziz|safetyword789
+nurulismail|Nurul Ismail|passphrase321
+mohamedahmad|Mohamed Ahmad|password567
