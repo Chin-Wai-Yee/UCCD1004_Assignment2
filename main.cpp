@@ -106,7 +106,7 @@ struct Trimester {
     // print all the courses in the trimester
     void print() {
         for (int i = 0; i < course_num; i++) {
-            cout << i+1 << "\t";
+            cout << setw(4) << right << i+1 << ".  ";
             course[i].print();
             cout << endl;
         }
@@ -172,21 +172,29 @@ struct People {
         }
     }
 
-    void printStudent() {
+    void printStudent(int page = 1) {
         cout << "Course Mangement System" << endl;
         cout << setfill('-') << setw(SCREEN_WIDTH) << "" << setfill(' ') << endl;
         cout << "Student ID : " << id << endl;
         cout << "Name       : " << name << endl;
         cout << setfill('-') << setw(SCREEN_WIDTH) << "" << setfill(' ') << endl;
-        for (int i = 0; i < trimester_num; i++) {
-            cout << "Trimester " << i+1 << endl;
+
+        int low = (page - 1) * 3;
+        int high = page * 3;
+        if (high > trimester_num) {
+            high = trimester_num;
+        }
+        for (int i = low; i < high; i++) {
+            cout << "Year " << page << " Trimester " << i % 3 + 1 << endl;
             cout << setfill('=') << setw(SCREEN_WIDTH) << "" << setfill(' ') << endl;
-            cout << "No.  Code\t" << setw(60) << "Course name" << "\tGred" << "Credit Hour" << endl;
+            cout << "  No.  Code\t" << setw(60) << left << "Course name" << "\tGred" << "\tCredit Hour" << endl;
             cout << setfill('=') << setw(SCREEN_WIDTH) << "" << setfill(' ') << endl;
             trimester[i].print();
             cout << setfill('-') << setw(SCREEN_WIDTH) << "" << setfill(' ') << endl;
             cout << endl;
         }
+
+
         cout << "Total number of courses taken : " << setw(6) << right << course_num << endl;
         cout << "Total credit hour earned      : " << setw(6) << right << total_credit_hour << endl;
         cout << "Cgpa                          : " << setprecision(4) << fixed << cgpa << endl;
@@ -375,49 +383,57 @@ struct People {
         } while (loop);
     }
 
-    // void deleteCourse()
-    // {
-    //     int sem, i;
-    //     bool loop = true;
-    //     do
-    //     {
-    //         system("cls");
-    //         printStudent();
-    //         string input;
-    //         if (getCoruseCode("Enter course code of course to be delete (0 - Exit): ", input, loop))
-    //         {
-    //             cout << endl;
-    //             i = getIndex(input);
-    //             sem = i / MAX_COURSES;
-    //             if (i == -1)
-    //             {
-    //                 cout << "Course not found!" << endl;
-    //                 cout << "Please enter agian!" << endl;
-    //             }
-    //             else if (trimester[sem])
-    //             else
-    //             {
-    //                 i = i % MAX_COURSES;
-    //                 // double comfirm
-    //                 cout << "Course code : " << course[i].code << endl;
-    //                 cout << "Course name : " << course[i].name << endl;
-    //                 cout << "Gred        : " << course[i].gred << endl;
-    //                 cout << "GPA         : " << course[i].gpa << endl;
-    //                 if (confirm("Are you sure to delete this course? (Y/N) : ", loop))
-    //                 {
-    //                     // delete course
-    //                     for (; i < i - 1; i++)
-    //                     {
-    //                         trimester[sem].course[i] = trimester[sem].course[i + 1];
-    //                     }
-    //                     trimester[sem].course_num--;
-    //                     cout << "Course deleted!" << endl;
-    //                 }
-    //             }
-    //         }
-    //         system("pause");
-    //     } while (loop);
-    // }
+    void deleteCourse()
+    {
+        int sem, i;
+        bool loop = true;
+        do
+        {
+            system("cls");
+            printStudent();
+            string input;
+            if (getCourseCode("Enter course code of course to be delete (0 - Exit): ", input, loop))
+            {
+                cout << endl;
+                i = getIndex(input);
+                sem = i / MAX_COURSES;
+                if (i == -1)
+                {
+                    cout << "Course not found!" << endl;
+                    cout << "Please enter agian!" << endl;
+                }
+                //
+                else if (sem != trimester_num - 1 && trimester[sem + 1].course_num == 0 && trimester[sem].course_num == 1)
+                {
+                    cout << "You cannot delete ." << endl;
+                }
+                else
+                {
+                    i = i % MAX_COURSES;
+                    // double comfirm
+                    cout << "Course code : " << trimester[sem].course[i].code << endl;
+                    cout << "Course name : " << trimester[sem].course[i].name << endl;
+                    cout << "Gred        : " << trimester[sem].course[i].gred << endl;
+                    cout << "GPA         : " << trimester[sem].course[i].gpa << endl;
+                    if (confirm("Are you sure to delete this course? (Y/N) : ", loop))
+                    {
+                        // delete course
+                        for (; i < trimester[sem].course_num - 1; i++)
+                        {
+                            trimester[sem].course[i] = trimester[sem].course[i + 1];
+                        }
+                        trimester[sem].course_num--;
+                        trimester[sem].course[i].updateAll();
+                        trimester[sem].update();
+                        update();
+
+                        cout << "Course deleted!" << endl;
+                    }
+                }
+            }
+            system("pause");
+        } while (loop);
+    }
 
 };
 
@@ -455,6 +471,7 @@ People lecturers[MAX_LECTURERS]; // Array to store lecturer data
 //========================================================================================================================//
 // Main function
 int main(void) {
+    
     system("chcp 65001>nul");
     ShowWindow( GetConsoleWindow() , SW_MAXIMIZE);
     // Read file and get current number of students in the array
@@ -464,11 +481,10 @@ int main(void) {
     readCourseFile("course_list.txt", students, student_num);
     // Start the program
 
-    // bool exit = false;
-    // while (!exit) {
-    //    mainMenu(students, lecturers, student_num, lecturer_num, exit);
-    // }
-    courseMenu(students[3], true);
+    bool exit = false;
+    while (!exit) {
+       mainMenu(students, lecturers, student_num, lecturer_num, exit);
+    }
 
     writeFile("students_list_output.txt", students, student_num);
     writeFile("lecturer_list_output.txt", lecturers, lecturer_num);
@@ -641,10 +657,15 @@ void mainMenu(People students[], People lecturers[], int& student_num, int& lect
 */
 void courseMenu(People& student, bool is_lecturer) {
     bool loop = true;
+    int page = 1;
+    int max_page = (student.trimester_num + 1) / 3;
     while (loop) {
         system("cls");
-        student.printStudent();
-
+        student.printStudent(page);
+        
+        cout << setfill('-') << setw(SCREEN_WIDTH) << "" << setfill(' ') << endl;
+        cout << "<P>rev" << setw(SCREEN_WIDTH - 7) << right << "<N>ext" << endl;
+        cout << endl;
         cout << "1. Print course(s) information to file" << endl;
         if (is_lecturer) {
             cout << "2. Add course" << endl;
@@ -662,6 +683,26 @@ void courseMenu(People& student, bool is_lecturer) {
         if (option == "1") {
             cout << "The function is not ready yet~" << endl;
         }
+        else if (option == "0") {
+            cout << "Exiting..." << endl;
+            loop = false;
+        }
+        else if (option == "n" || option == "N") {
+            if (page <= max_page) {
+                page++;
+            }
+            else {
+                cout << "No next page" << endl;
+            }
+        }
+        else if (option == "p" || option == "P") {
+            if (page > 1) {
+                page--;
+            }
+            else {
+                cout << "No previous page" << endl;
+            }
+        }
         else if (is_lecturer) {
             if (option == "2") {
                 student.addCourseInfo();
@@ -670,13 +711,9 @@ void courseMenu(People& student, bool is_lecturer) {
                 student.addCourseInfo(true);
             }
             else if (option == "4") {
-                cout << "Not ready yet~" << endl;
+                student.deleteCourse();
                 // student.deleteCourse();
             }
-        }
-        else if (option == "0") {
-            cout << "Exiting..." << endl;
-            loop = false;
         }
         else {
             cout << "Invalid option" << endl;
@@ -863,7 +900,6 @@ int searchEngine(People people[], int total, string type, int result[])
     string search;
     getline(cin, search);
     search = toUpper(search);
-
     for (int i = 0; i < total; i++)
     {
         if (toUpper(people[i].name).find(search) != string::npos ||
@@ -1147,7 +1183,7 @@ void view(Course course[], int size)
 void view (People people[], int size, string type, bool show_cgpa)
 {
     // header
-    cout << "No. \t";
+    cout << "  No. \t";
     cout << type << " ID \t";
     cout << setw(60) << left << type + " name\t";
     if (show_cgpa)
@@ -1161,7 +1197,7 @@ void view (People people[], int size, string type, bool show_cgpa)
     // body
     for (int i = 0; i < size; i++)
     {
-        cout << setw(3) << right << i + 1 << " \t";
+        cout << setw(5) << right << i + 1 << ". \t";
         people[i].print(show_cgpa);
         cout << endl;
     }

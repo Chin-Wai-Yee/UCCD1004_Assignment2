@@ -13,16 +13,17 @@ FHSC1014|Mechanics|C+
 1
 1
 FHMM1014|Mathematics I|A
-3
+4
 4
 FHBM1114|Management|A
 FHCT1012|Computing Technology|A
 FHCT1014|Introduction to Data Analytics|A-
 FHCT1024|Programming Concepts and Design|A+
-5
+3
 FHEL1012|English for Academic Study|B+
 FHMM1014|Mathematics I|A
 FHMM1022|Effective Communication Skills|A-
+2
 FHMM1024|Mathematics II|C+
 FHMM1034|Mathematics III|A
 4
