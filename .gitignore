@@ -353,3 +353,4 @@ MigrationBackup/
 
 # Ignore exe file that generated when building
 *.exe
+*.bat
