@@ -431,6 +431,7 @@ struct People {
                 {
                     i = i % MAX_COURSES;
                     // double comfirm
+                    cout << "  \033[4mCourse Information\033[0m" << endl;
                     cout << "  Course code : " << trimester[sem].course[i].code << endl;
                     cout << "  Course name : " << trimester[sem].course[i].name << endl;
                     cout << "  Gred        : " << trimester[sem].course[i].gred << endl;
@@ -554,9 +555,6 @@ void readCourseFile(string file_name, People student[], int stu_num) {
     fstream file(file_name, ios::app | ios::in); // open file if exist, else create it
     // loop every student
     for (int i = 0; i < stu_num; i++) {
-        // This will actually slow down the program.... but it looks good in some way
-        system("cls");
-        cout << "\tLoading....." << (double)i*100/stu_num << "%" << endl;
         file >> student[i].trimester_num;
         for (int j = 0; j < student[i].trimester_num; j++) {
             file >> student[i].trimester[j].course_num;
@@ -698,7 +696,7 @@ void courseMenu(People& student, bool is_lecturer) {
         student.printStudent(page);
         
         cout << setfill('-') << setw(SCREEN_WIDTH) << "" << setfill(' ') << endl;
-        cout << "    <P>revious page";
+        cout << "    Previous page";
         cout << setw(SCREEN_WIDTH/2 - 16) << right << "Page " << page << " of " << setw(2) << left << max_page;
         cout << setw(SCREEN_WIDTH/2 - 16) << right << "<N>ext page" << endl;
         cout << endl;
