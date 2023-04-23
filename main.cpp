@@ -629,7 +629,15 @@ void writeCourseFile(string file_name, People student[], int count){
 void mainMenu(People students[], People lecturers[], int& student_num, int& lecturer_num, bool& exit) {
 
     system("cls");
-    cout << "  Welcome to Student Management System" << endl;
+    string abc;
+    ifstream infile;
+    infile.open("welcome.txt");
+    while (!infile.eof())
+    {
+        getline(infile, abc);
+        cout << abc << endl;
+
+    }
     cout << "  Please select your identity" << endl;
     cout << endl;
     cout << "  1. Student" << endl;
