@@ -511,6 +511,7 @@ int main(void) {
     writeFile("students_list_output.txt", students, student_num);
     writeFile("lecturer_list_output.txt", lecturers, lecturer_num);
     writeCourseFile("course_list_output.txt", students, student_num);
+    cout << "  All changes are saved." << endl;
     cout << "  "; system("pause");
     return 0;
 }
@@ -614,7 +615,8 @@ void writeCourseFile(string file_name, People student[], int count){
                 file << student[i].trimester[j].course[k].gred;
             }
         }
-        if (i != student[i].trimester_num - 1) {
+        if (i != count - 1) {
+            file << "End here";
             file << endl;
         }
     }
@@ -1399,7 +1401,7 @@ void view (People people[], int size, string type, int page, bool show_cgpa, boo
         high = size;
     }
 
-    for (int i = 0; i < high; i++)
+    for (int i = low; i < high; i++)
     {
         cout << setw(5) << right << i + 1 << ". \t";
         people[i].print(show_cgpa, show_password);

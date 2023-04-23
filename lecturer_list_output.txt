@@ -4,3 +4,22 @@ liewxiuying|Liew Xiu Ying|securepass456
 muhamadaziz|Muhamad Aziz|safetyword789
 nurulismail|Nurul Ismail|passphrase321
 mohamedahmad|Mohamed Ahmad|password567
+profgchan|Grace Chan|teachingrocks1
+drjlim|Jasmine Lim|researcher23
+assocprofhwong|Henry Wong|dataanalytics45
+drkangjy|Kang Jian Yong|computervision67
+drteohkm|Teoh Kim Mun|machinelearning89
+assocprofytan|Yvonne Tan|neuralnetworks12
+profnorah|Norah Abdullah|artificialintelligence34
+drmaxl|Max Lee|bigdata56
+profctan|Chin Tan|deeplearning78
+drvincentl|Vincent Lee|datascience90
+profgoh|Goh Lay Kuan|statistics12
+drnabil|Nabil Ahmad|numericalmethods34
+assocprofewong|Evelyn Wong|algorithms56
+profmcheng|Ming Cheng|mathematics78
+drjacksonw|Jackson Wong|engineering90
+assocprofjlee|Jenny Lee|physics12
+profawang|Anne Wang|chemistry34
+drandrewc|Andrew Chen|biology56
+profrchan|Rachel Chan|environmentalstudies78

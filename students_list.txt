@@ -1,6 +1,32 @@
+1111111|Test Student|
 2103133|Wong Kok Kok|abc
 2101234|Li Lei|abc
 2106720|Han Mei Mei|abc
 2103370|Chin Wai Yee|abc
 2114514|Li Lao Han|abc
 1234567|Ni Hao A|
+2108765|Tan Ah Kow|abc
+2112345|Lim Mei Ling|abc
+2109876|Ng Tze Hui|abc
+2117890|Tan Wei Jie|abc
+2123456|Chua Bee Leng|abc
+2126789|Yeo Wei Xiang|abc
+2113456|Tay Su Ling|abc
+2125678|Chen Hui Ling|abc
+2134567|Ong Ah Peng|abc
+2145678|Wang Hong Jun|abc
+2109865|Jasmine Kaur|sikhism1
+2167890|Mohammed Ali|islam23
+2155539|Yan Li|confucianism45
+2161954|John Doe|atheism67
+2168370|Jenny Kim|buddhism89
+2154321|Sarita Patel|abc
+2187654|Hiroshi Nakamura|abc
+2198765|Gita Singh|abc
+2176543|Tariq Khan|abc
+2156789|Nguyen Minh Thu|abc
+2165432|Maria Garcia|abc
+2189012|Youssef Khouri|abc
+2178901|Mei Chen|abc
+2156780|Tariq Ali|abc
+2190123|Nina Kim|abc

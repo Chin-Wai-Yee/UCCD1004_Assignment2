@@ -35,3 +35,9 @@ FHSC1114|Physical Chemistry|A
 1
 FHCT1012|Computing Technology|A
 0
+1
+4
+FHCT1012|Computing Technology|B
+FHMM1014|Mathematics I|F
+FHSB1214|Biology I|A+
+FHSC1014|Mechanics|C
