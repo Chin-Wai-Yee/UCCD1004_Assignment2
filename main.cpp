@@ -33,6 +33,11 @@ bool   getCourseCode (string, string&, bool&, bool accept_empty = false);
 bool   getCourseName (string, string&, bool&, bool accept_empty = false);
 bool   getGred (string, string&, bool&, bool accept_empty = false);
 bool   confirm(string, bool&);
+void   readBanner(string, string&);
+
+//========================================================================================================================//
+// For decoration purpose, banner in string format
+string admin_manage, course_manage, lecturer_manage, search_result, student_manage, welcome;
 
 //========================================================================================================================//
 // Declaration of structs
@@ -69,6 +74,12 @@ struct Course {
 
     void print() {
         cout << code << "\t" << setw(60) << left << name << "\t" << gred << "\t" << right << credit_hour << "\t";
+    }
+
+    void printFile(string filename) {
+        fstream file(filename, ios::out);
+        file << code << "\t" << setw(60) << left << name << "\t" << gred << "\t" << right << credit_hour << "\t";
+        file.close();
     }
 
     void updateCreditHour () {
@@ -114,6 +125,19 @@ struct Trimester {
         cout << setfill('-') << setw(SCREEN_WIDTH) << "" << setfill(' ') << endl;
         cout << "  Total credit hour : " << setw(6) << right << total_credit_hour << endl;
         cout << "  Cgpa              : " << setprecision(4) << fixed << cgpa << endl;
+    }
+
+    void printFile(string filename) {
+        fstream file(filename, ios::out);
+        for (int i = 0; i < course_num; i++) {
+            file << setw(4) << right << i+1 << ".  ";
+            course[i].print();
+            file << endl;
+        }
+        file << setfill('-') << setw(SCREEN_WIDTH) << "" << setfill(' ') << endl;
+        file << "  Total credit hour : " << setw(6) << right << total_credit_hour << endl;
+        file << "  Cgpa              : " << setprecision(4) << fixed << cgpa << endl;
+        file.close();
     }
 
     // update cgpa
@@ -176,16 +200,9 @@ struct People {
         }
     }
 
-    void printStudent(int page = 1) {
-        string abc;
-        ifstream infile;
-        infile.open("Course Management System.txt");
-        while (!infile.eof())
-        {
-            getline(infile, abc);
-            cout << abc << endl;
 
-        }
+    void printStudent(int page = 1) {
+        cout << course_manage;
         cout << setfill('-') << setw(SCREEN_WIDTH) << "" << setfill(' ') << endl;
         cout << "  Student ID : " << id << endl;
         cout << "  Name       : " << name << endl;
@@ -211,6 +228,32 @@ struct People {
         cout << "  Total credit hour earned      : " << setw(6) << right << total_credit_hour << endl;
         cout << "  Cgpa                          : " << setprecision(4) << fixed << cgpa << endl;
         cout << endl;
+    }
+
+    void printFile(string filename) {
+        ifstream infile;
+        cout << course_manage;
+        cout << setfill('-') << setw(SCREEN_WIDTH) << "" << setfill(' ') << endl;
+        cout << "  Student ID : " << id << endl;
+        cout << "  Name       : " << name << endl;
+        cout << setfill('-') << setw(SCREEN_WIDTH) << "" << setfill(' ') << endl;
+
+        for (int i = 0; i < trimester_num; i++) {
+            cout << "  Year " << trimester_num / 3 << " Trimester " << i % 3 + 1 << endl;
+            cout << setfill('=') << setw(SCREEN_WIDTH) << "" << setfill(' ') << endl;
+            cout << "  No.  Code\t" << setw(60) << left << "Course name" << "\tGred" << "\tCredit Hour" << endl;
+            cout << setfill('=') << setw(SCREEN_WIDTH) << "" << setfill(' ') << endl;
+            trimester[i].print();
+            cout << setfill('-') << setw(SCREEN_WIDTH) << "" << setfill(' ') << endl;
+            cout << endl;
+        }
+
+
+        cout << "  Total number of courses taken : " << setw(6) << right << course_num << endl;
+        cout << "  Total credit hour earned      : " << setw(6) << right << total_credit_hour << endl;
+        cout << "  Cgpa                          : " << setprecision(4) << fixed << cgpa << endl;
+        cout << endl;
+
     }
 
     // update the cgpa and total credit hour of the student
@@ -505,6 +548,14 @@ int main(void) {
     
     system("chcp 65001>nul");
     ShowWindow( GetConsoleWindow() , SW_MAXIMIZE);
+    // Read banners
+    readBanner("banner\\Admin Management System.txt", admin_manage);
+    readBanner("banner\\Course Management System.txt", course_manage);
+    readBanner("banner\\Lecturer Management System.txt", lecturer_manage);
+    readBanner("banner\\Search Result.txt", search_result);
+    readBanner("banner\\Student Management System.txt", student_manage);
+    readBanner("banner\\Welcome to Student Management System.txt", welcome);
+
     // Read file and get current number of students in the array
     int student_num, lecturer_num;
     readFile("students_list.txt", students, student_num);
@@ -527,6 +578,18 @@ int main(void) {
 
 //========================================================================================================================//
 // File handling related:
+
+void readBanner (string filename, string& output) {
+    fstream file(filename, ios::in);
+    output = "";
+    if (file.is_open()) {
+        while (!file.eof()) {
+            string temp;
+            getline(file, temp);
+            output += temp + "\n";
+        }
+    }
+}
 
 /**
  * @brief Read people info from targeted file
@@ -635,15 +698,7 @@ void writeCourseFile(string file_name, People student[], int count){
 void mainMenu(People students[], People lecturers[], int& student_num, int& lecturer_num, bool& exit) {
 
     system("cls");
-    string abc;
-    ifstream infile;
-    infile.open("Welcome to Student Management System.txt");
-    while (!infile.eof())
-    {
-        getline(infile, abc);
-        cout << abc << endl;
-
-    }
+    cout << welcome << endl;
     cout << "  Please select your identity" << endl;
     cout << endl;
     cout << "  1. Student" << endl;
@@ -760,27 +815,11 @@ void peopleMenu(People people[], int& total, string type, bool admin) {
         system("cls");
         if (type == "Student")
         {
-            string abc;
-            ifstream infile;
-            infile.open("Student Management System.txt");
-            while (!infile.eof())
-            {
-                getline(infile, abc);
-                cout << abc << endl;
-
-            }
+            cout << student_manage;
         }
         else if (type == "Lecturer")
         {
-            string abc;
-            ifstream infile;
-            infile.open("Lecturer Management System.txt");
-            while (!infile.eof())
-            {
-                getline(infile, abc);
-                cout << abc << endl;
-
-            }
+            cout << lecturer_manage;
         }
         cout << endl;
         view(people, total, type, page, type == "Student", admin);
@@ -847,15 +886,7 @@ void adminMenu(People students[], int& student_num, People lecturers[], int& lec
     bool loop = true;
     while (loop) {
         system("cls");
-        string abc;
-        ifstream infile;
-        infile.open("Admin Management System.txt");
-        while (!infile.eof())
-        {
-            getline(infile, abc);
-            cout << abc << endl;
-
-        }
+        cout << admin_manage;
         cout << endl;
         cout << "  1. Student Management" << endl;
         cout << "  2. Lecturer Management" << endl;
@@ -999,6 +1030,7 @@ void searchPeople(People people[], int total, string type, bool admin) {
     while (loop)
     {
         system("cls");
+        cout << search_result;
         view(people, result, search_result_num, type, page, admin);
         cout << "  0. Back" << endl;
         cout << endl;
@@ -1491,7 +1523,7 @@ void view (People people[], int result[], int total, string type, int page, bool
         high = total;
     }
 
-    for (int i = 0; i < total; i++)
+    for (int i = low; i < high; i++)
     {
         cout << setw(5) << right << i + 1 << ". \t";
         people[result[i]].print(show_cgpa, show_password);
@@ -1500,7 +1532,7 @@ void view (People people[], int result[], int total, string type, int page, bool
 
     if (total == 0)
     {
-        cout << "  No data found." << endl;
+        cout << "   No data found...." << endl;
     }
 
     cout << setfill('-') << setw(SCREEN_WIDTH) << "" << setfill(' ') << endl;
@@ -1537,6 +1569,7 @@ bool login(People people[], int size, int& index) {
         getline(cin, user_input);
         if (user_input != people[i].password) {
             cout << "  Wrong password. Please try again." << endl;
+            system("pause");
             return false;
         }
     }
