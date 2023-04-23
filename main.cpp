@@ -77,7 +77,7 @@ struct Course {
     }
 
     void printFile(string filename) {
-        fstream file(filename, ios::out);
+        fstream file(filename, ios::app);
         file << code << "\t" << setw(60) << left << name << "\t" << gred << "\t" << right << credit_hour << "\t";
         file.close();
     }
@@ -128,10 +128,10 @@ struct Trimester {
     }
 
     void printFile(string filename) {
-        fstream file(filename, ios::out);
+        fstream file(filename, ios::app);
         for (int i = 0; i < course_num; i++) {
             file << setw(4) << right << i+1 << ".  ";
-            course[i].print();
+            course[i].printFile(filename);
             file << endl;
         }
         file << setfill('-') << setw(SCREEN_WIDTH) << "" << setfill(' ') << endl;
@@ -231,29 +231,28 @@ struct People {
     }
 
     void printFile(string filename) {
-        ifstream infile;
-        cout << course_manage;
-        cout << setfill('-') << setw(SCREEN_WIDTH) << "" << setfill(' ') << endl;
-        cout << "  Student ID : " << id << endl;
-        cout << "  Name       : " << name << endl;
-        cout << setfill('-') << setw(SCREEN_WIDTH) << "" << setfill(' ') << endl;
+        fstream file(filename, ios::app);
+        file << course_manage;
+        file << setfill('=') << setw(SCREEN_WIDTH) << "" << setfill(' ') << endl;
+        file << "  Student ID : " << id << endl;
+        file << "  Name       : " << name << endl;
+        file << setfill('=') << setw(SCREEN_WIDTH) << "" << setfill(' ') << endl;
 
         for (int i = 0; i < trimester_num; i++) {
-            cout << "  Year " << trimester_num / 3 << " Trimester " << i % 3 + 1 << endl;
-            cout << setfill('=') << setw(SCREEN_WIDTH) << "" << setfill(' ') << endl;
-            cout << "  No.  Code\t" << setw(60) << left << "Course name" << "\tGred" << "\tCredit Hour" << endl;
-            cout << setfill('=') << setw(SCREEN_WIDTH) << "" << setfill(' ') << endl;
-            trimester[i].print();
-            cout << setfill('-') << setw(SCREEN_WIDTH) << "" << setfill(' ') << endl;
-            cout << endl;
+            file << "  Year " << trimester_num / 3 << " Trimester " << i % 3 + 1 << endl;
+            file << setfill('=') << setw(SCREEN_WIDTH) << "" << setfill(' ') << endl;
+            file << "  No.  Code\t" << setw(60) << left << "Course name" << "\tGred" << "\tCredit Hour" << endl;
+            file << setfill('=') << setw(SCREEN_WIDTH) << "" << setfill(' ') << endl;
+            trimester[i].printFile(filename);
+            file << setfill('-') << setw(SCREEN_WIDTH) << "" << setfill(' ') << endl;
+            file << endl;
         }
 
-
-        cout << "  Total number of courses taken : " << setw(6) << right << course_num << endl;
-        cout << "  Total credit hour earned      : " << setw(6) << right << total_credit_hour << endl;
-        cout << "  Cgpa                          : " << setprecision(4) << fixed << cgpa << endl;
-        cout << endl;
-
+        file << "  Total number of courses taken : " << setw(6) << right << course_num << endl;
+        file << "  Total credit hour earned      : " << setw(6) << right << total_credit_hour << endl;
+        file << "  Cgpa                          : " << setprecision(4) << fixed << cgpa << endl;
+        file << endl;
+        file.close();
     }
 
     // update the cgpa and total credit hour of the student
@@ -778,7 +777,8 @@ void courseMenu(People& student, bool is_lecturer) {
         string option;
         getline(cin, option);
         if (option == "1") {
-            cout << "  The function is not ready yet~" << endl;
+            student.printFile(student.name + ".txt");
+            cout << "  File saved to " << student.name << ".txt" << endl;
             cout << "  "; system("pause");
         }
         else if (option == "0") {
@@ -813,14 +813,6 @@ void peopleMenu(People people[], int& total, string type, bool admin) {
     bool loop = true;
     while (loop) {
         system("cls");
-        if (type == "Student")
-        {
-            cout << student_manage;
-        }
-        else if (type == "Lecturer")
-        {
-            cout << lecturer_manage;
-        }
         cout << endl;
         view(people, total, type, page, type == "Student", admin);
         cout << endl;
@@ -1454,6 +1446,12 @@ void deletePeople(People people[], int& newIndex, string type, int page, bool ad
 void view (People people[], int size, string type, int page, bool show_cgpa, bool show_password)
 {
     // header
+    if (type == "Student") {
+        cout << student_manage;
+    }
+    else {
+        cout << lecturer_manage;
+    }
     cout << setfill('=') << setw(SCREEN_WIDTH) << "" << setfill(' ') << endl;
     cout << "   No. \t";
     cout << setw(15) << left << type + " ID";
