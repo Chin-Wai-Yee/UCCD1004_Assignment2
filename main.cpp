@@ -25,6 +25,7 @@ const int MAX_TRIMESTER = 15; // Maximum number of trimester that can be stored
 const int MAX_LECTURERS = 30; // Maximum number of lecturers that can be stored
 const int MAX_NAME_LENGTH = 60; // Maximum length of name
 const int SCREEN_WIDTH = 150; // Width of the screen
+const int MAX_NAME_PER_PAGE = 10; // Maximum number of name per page
 
 int    getGpa(string);
 bool   getNum (string, int&, int, int, bool&);
@@ -166,7 +167,7 @@ struct People {
 
     // print the people info
     void print(bool show_cgpa = false) {
-        cout << id << " \t" << setw(60) << left << name;
+        cout << setw(15) << left << id << setw(60) << left << name;
         if (show_cgpa) {
             cout << "\t" << setprecision(4) << fixed << cgpa;
         }
@@ -280,8 +281,6 @@ struct People {
                             newIndex = newIndex % MAX_COURSES;
                             if (course_code == "")
                             {
-                                cout << "Wow it is empty!" << endl;
-                                cout << semester << " " << newIndex << endl;
                                 course_code = trimester[semester].course[newIndex].code;
                             }
                             cout << course_code << endl;
@@ -352,6 +351,13 @@ struct People {
                     {
                         header = header.substr(0, header.size() - 16);
                         cout << "Please enter the course information for the previous trimester first." << endl;
+                        cout << "Please enter again..." << endl;
+                        step--;
+                    }
+                    else if (trimester[semester].course_num == MAX_COURSES)
+                    {
+                        header = header.substr(0, header.size() - 16);
+                        cout << "Maximum number of courses reached..." << endl;
                         cout << "Please enter again..." << endl;
                         step--;
                     }
@@ -454,14 +460,10 @@ bool   testCourseCode(string);
 string toUpper(string);
 int    searchEngine(People[], int, string, int[]);
 int    getIndex(People[], int, string);
-void   modifyPeopleInfo(People[], int&, bool update = false);
+void   modifyPeopleInfo(People[], int&, string, bool update = false);
 void   deletePeople(People[], int&);
 
-// pending to delete
-void   view(Course[], int);
-
-
-void   view(People[], int, string, bool show_cgpa = false);
+void   view(People[], int, string, int, bool show_cgpa = false);
 bool   login(People[], int, int&);
 
 
@@ -712,7 +714,6 @@ void courseMenu(People& student, bool is_lecturer) {
             }
             else if (option == "4") {
                 student.deleteCourse();
-                // student.deleteCourse();
             }
         }
         else {
@@ -729,12 +730,14 @@ void peopleMenu(People people[], int& total, string type) {
         system("cls");
         cout << type << " Management System" << endl;
         cout << endl;
-        view(people, total, "Student", true);
+        view(people, total, type, true);
         cout << endl;
         cout << "1. Add "    << type << endl;
         cout << "2. Edit "   << type << endl;
         cout << "3. Delete " << type << endl;
-        cout << "4. View "   << type << endl;
+        if (type == "Student") {
+            cout << "4. View "   << type << " course" << endl;
+        }
         cout << endl;
         cout << "0. Exit" << endl;
         cout << endl;
@@ -743,10 +746,15 @@ void peopleMenu(People people[], int& total, string type) {
         string option;
         getline(cin, option);
         if (option == "1") {
-            modifyPeopleInfo(people, total);
+            if (total < MAX_STUDENTS) {
+                modifyPeopleInfo(people, total, type);
+            }
+            else {
+                cout << "The system is full, please delete some " << type << " first." << endl;
+            }
         }
         else if (option == "2") {
-            modifyPeopleInfo(people, total, true);
+            modifyPeopleInfo(people, total, type, true);
         }
         else if (option == "3") {
             deletePeople(people, total);
@@ -843,10 +851,10 @@ bool testName(string input, int max_size)
     }
 	for (int i = 0; i < input.length(); i++)
 	{
-		if (!isalpha(input[i]) && input[i] != ' ')
-		{
-			return false;
-		}
+        if (!isalpha(input[i]) && input[i] != ' ')
+        {
+            return false;
+        }
 	}
 	return true;
 }
@@ -1025,6 +1033,68 @@ bool getGred (string prompt, string& gred, bool& loop, bool accept_empty) {
     }
 }
 
+bool getID (string prompt, string& id, bool& loop, bool is_student = true) {
+    cout << prompt;
+    getline(cin, id);
+    if (id == "") {
+        cout << "Invalid input, please try again." << endl;
+        cout << "The ID cannot be empty." << endl;
+        return false;
+    }
+    else if (id == "0") {
+        loop = false;
+        return false;
+    }
+    else if (is_student) {
+        if (testStudentId(id)) {
+            return true;
+        }
+        else {
+            cout << "That is not the proper format of the student ID." << endl;
+            cout << "Here is an example : 1234567 " << endl;
+            cout << "(Only  7 digits number is allowed)" << endl;
+            return false;
+        }
+    }
+    else {
+        for (int i = 0; i < id.size(); i++) {
+            if (id[i] == '|') {
+                cout << "Invalid input, please try again." << endl;
+                cout << "Please do not use '|' in your ID." << endl;
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+bool getName (string prompt, string& name, bool& loop, bool accept_empty) {
+    cout << prompt;
+    getline(cin, name);
+    if (name == "0") {
+        loop = false;
+        return false;
+    }
+    else if (testName(name) || (accept_empty && name == "")) {
+        return true;
+    }
+    else {
+        cout << "That is not the proper format of the name." << endl;
+        cout << "Here is an example : John Doe " << endl;
+        cout << "(Only alphabets and spaces are allowed)" << endl;
+        return false;
+    }
+}
+
+bool getPassword(string prompt, string& password, bool& loop) {
+    cout << prompt;
+    getline(cin, password);
+    if (password == "") {
+        return confirm("This will set no password for you, are you sure? (Y/N) ", loop);
+    }
+    return true;
+}
+
 bool confirm(string prompt, bool& loop) {
     loop = false;
     cout << prompt;
@@ -1058,70 +1128,80 @@ bool confirm(string prompt, bool& loop) {
  * @param newIndex Index of the people
  * @param update If true, update the people, else add a new people, default is false
 */
-void modifyPeopleInfo(People people[], int& newIndex, bool update)
+void modifyPeopleInfo(People people[], int& newIndex, string type, bool update)
 {
-	int loop = 0, i = newIndex;
-	while (loop >= 0)
+    bool loop = true;
+	int step = 0, i = newIndex, size = newIndex;
+    string prompt = " (<0> - exit";
+    if (update)
+    {
+        " <Enter> - Keep the current value";    
+    }
+    prompt += ") : ";
+
+    string name, id, password;
+	while (loop)
 	{
-		loop++;
+        system("cls");
+        view(people, size, type, type == "Student");
+		step++;
 		string input;
-		while (loop == 1)
+		if (step == 1)
 		{
-			cout << "Please enter ID (0 - Exit) : ";
-			string id;
-			getline(cin, id);
-            if (id == "0")
+            if(getID("Please enter ID" + prompt, id, loop, type == "Student"))
             {
-                loop = -1;
-                break;
+                int i = getIndex(people, newIndex, id);
+                if (update && i == -1)
+                {
+                    cout << "ID not found!" << endl;
+                    cout << "Please enter again!" << endl;
+                }
+                else if (i != -1)
+                {
+                    cout << "ID already exists!" << endl;
+                    cout << "Please enter again!" << endl;
+                }
+                else
+                {
+                    step++;
+                }
             }
-            else if (update)
-			{
-				i = getIndex(people, newIndex, id);
-				if (i == -1)
-				{
-					cout << "ID not found!" << endl;
-					cout << "Please enter again!" << endl;
-				}
-				else
-				{
-					loop++;
-				}
-			}
-			else if (testStudentId(id))
-			{
-				people[i].id = id;
-				loop++;
-			}
-			else
-			{
-				cout << "That is not the proper format of the ID." << endl;
-				cout << "Here is an example : 1234567 " << endl;
-				cout << "Please enter again!" << endl;
-			}
 		}
 
-		while (loop == 2)
+		if (step == 2)
 		{
-			cout << "Student's name : ";
-			string name;
-			getline(cin, name);
-			if (testName(name))
-			{
-				people[i].name = name;
-                if (!update)
+            if(getName("Please enter name" + prompt, name, loop, update))
+            {
+                if (update && name == "")
                 {
-                    newIndex++;
+                    name = people[i].name;
                 }
-				loop = -1;
-			}
-			else
-			{
-				cout << "That is not the proper format of name." << endl;
-				cout << "Here is an example : John Smith " << endl;
-				cout << "Please enter again!" << endl;
-			}
+                step++;
+            }
 		}
+        
+        if (step == 3)
+        {
+            if(getPassword("Please enter password" + prompt, password, loop))
+            {
+                step++;
+            }
+        }
+
+        if (step == 4)
+        {
+            people[i].name = name;
+            people[i].id = id;
+            people[i].password = password;
+            if (!update)
+            {
+                newIndex++;
+            }
+            loop = false;
+            system("cls");
+            view(people, size, type, type == "Student");
+            cout << "People information updated !" << endl;
+        }
 	}
 }
 
@@ -1155,43 +1235,25 @@ void deletePeople(People people[], int& newIndex)
 // Output related
 
 /**
- * @brief View student information
- * @param student Student information
- * @param course Array of course
-*/
-void view(Course course[], int size)
-{
-
-    // display all the courses
-    for (int i = 0; i < size; i++)
-    {
-        cout << i + 1 << "\t";
-        cout << course[i].code << "\t";
-        cout << setw(60) << left << course[i].name;
-        cout << course[i].credit_hour << "\t";
-        cout << course[i].gred << endl;
-    }
-}
-
-/**
  * @brief View all people information
  * @param people Array of people information
  * @param size Size of the array
  * @param type Identity of the people (student/lecturer)
  * @param show_cgpa Show the cgpa, default is false
 */
-void view (People people[], int size, string type, bool show_cgpa)
+void view (People people[], int size, string type, int page, bool show_cgpa)
 {
     // header
-    cout << "  No. \t";
-    cout << type << " ID \t";
+    cout << setfill('=') << setw(SCREEN_WIDTH) << "" << setfill(' ') << endl;
+    cout << "   No. \t";
+    cout << setw(15) << left << type + " ID";
     cout << setw(60) << left << type + " name\t";
     if (show_cgpa)
     {
         cout << "CGPA";
     }
     cout << endl;
-    cout << setfill('-') << setw(SCREEN_WIDTH) << "" << setfill(' ') << endl;
+    cout << setfill('=') << setw(SCREEN_WIDTH) << "" << setfill(' ') << endl;
 
 
     // body
