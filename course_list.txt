@@ -41,3 +41,232 @@ FHCT1012|Computing Technology|B
 FHMM1014|Mathematics I|F
 FHSB1214|Biology I|A+
 FHSC1014|Mechanics|C
+1
+6
+UCCD2303|Database Technology|B
+UCCE1034|Electronic Devices And Circuits|A
+UCCD1213|Fundamentals Of Digital Media Technology|C
+UCCD2303|Database Technology|B
+UCCM1353|Basic Algebra|B
+UCCB3133|Business Analytics|A
+2
+7
+UCCB3144|Advanced Digital Media Technology|A
+UCCD1013|Analysis And Design Of Information Systems|B
+UCCD2233|IT in Customer Relationship Management|B
+UCCE1023|Digital Fundamentals|C
+UCCD1024|Data Structure and Algorithmic Problem Solving|A
+UCCD2303|Database Technology|B
+UCCD1203|Database Development And Application|B
+4
+UCCD3054|Graphics Programming For Mobile Platform|B
+UCCN1213|Fundamentals Of Computer And Information Security|A
+UCCD2303|Database Technology|B
+UCCB1104|Introduction to Business Programming|A
+4
+9
+UCCB3104|Business Intelligence Information Systems|C
+UCCM1363|Discrete Mathematics|B
+UCCD1024|Data Structure and Algorithmic Problem Solving|A
+UCCE1024|Circuit Theory And Basic Electronics|A
+UCCB2113|Business Information Management|C
+UCCB3133|Business Analytics|B
+UCCD2233|IT in Customer Relationship Management|B
+UCCE2053|Computer Organization And Architecture|B
+UCCD2323|Front-End Web Development|A
+6
+UCCD3003|Electronic Commerce|A
+UCCD2303|Database Technology|B
+UCCE1073|Digital Circuits And Devices|A
+UCCB3133|Business Analytics|A
+UCCD1113|Introduction To Multimedia|C
+UCCD1213|Fundamentals Of Digital Media Technology|B
+4
+UCCE2103|Digital Signal Processing|A
+UCCD2323|Front-End Web Development|B
+UCCB3133|Business Analytics|A
+UCCD1024|Data Structure and Algorithmic Problem Solving|C
+6
+UCCD2323|Front-End Web Development|B
+UCCD2303|Database Technology|B
+UCCD1203|Database Development And Application|B
+UCCN2043|Digital Communications|C
+UCCD3054|Graphics Programming For Mobile Platform|A
+UCCD1213|Fundamentals Of Digital Media Technology|B
+1
+5
+UCCD1113|Introduction To Multimedia|A
+UCCD2303|Database Technology|A
+UCCB2113|Business Information Management|A
+UCCB3224|Data Mining Techniques|C
+UCCD3054|Graphics Programming For Mobile Platform|B
+2
+4
+UCCD1113|Introduction To Multimedia|A
+UCCE1073|Digital Circuits And Devices|B
+UCCD2303|Database Technology|A
+UCCD1024|Data Structure and Algorithmic Problem Solving|B
+5
+UCCD2303|Database Technology|B
+UCCD2233|IT in Customer Relationship Management|A
+UCCB3133|Business Analytics|B
+UCCM1353|Basic Algebra|B
+UCCD1024|Data Structure and Algorithmic Problem|F
+5
+3
+UCCD1024|Data Structure and Algorithmic Problem Solving|B
+UCCD3233|Data Warehouse Modelling And Implementation|A-
+UCCD1203|Database Development And Application|C
+2
+UCCD3074|Deep Learning For Data Science|A
+UCCE1073|Digital Circuits And Devices|B+
+4
+UCCN2043|Digital Communications|A-
+UCCE2103|Digital Signal Processing|B
+UCCE2023|Digital Systems Design|A
+UCCM1363|Discrete Mathematics|A
+3
+UCCD3113|Distributed Computer Systems|A-
+UCCD3003|Electronic Commerce|B+
+UCCE1074|Electronic Design And Testing|C
+1
+UCCD3053|Information Technology Professional Ethics|A
+3
+4
+UCCB3133|Business Analytics|A-
+UCCG3133|Business Analytics|A
+UCCB2113|Business Information Management|B
+UCCB3104|Business Intelligence Information Systems|B+
+1
+UCCD1213|Fundamentals Of Digital Media Technology|C
+1
+UCCD1024|Data Structure and Algorithmic Problem Solving|B
+2
+3
+UCCD3074|Deep Learning For Data Science|B
+UCCE1073|Digital Circuits And Devices|B-
+UCCN2043|Digital Communications|C+
+3
+UCCD3113|Distributed Computer Systems|A-
+UCCD3003|Electronic Commerce|A
+UCCE1074|Electronic Design And Testing|C
+2
+2
+UCCD3053|Information Technology Professional Ethics|A+
+UCCD2043|Information Technology Project Management|A-
+2
+UCCD3063|Innovation and Creative Management|A-
+UCCE1063|Integrated Circuit Fundamentals|B+
+1
+1
+UCCD1213|Fundamentals Of Digital Media Technology|C
+4
+4
+UCCB3144|Advanced Digital Media Technology|A
+UCCC2063|Algorithms Analysis|B
+UCCD1013|Analysis And Design Of Information Systems|A-
+UCCD2063|Artificial Intelligence Techniques|A-
+2
+UCCM1353|Basic Algebra|B+
+UCCE2093|Computational Intelligence|B-
+1
+UCCN1223|Cybersecurity|A-
+3
+UCCD3113|Distributed Computer Systems|A-
+UCCD3003|Electronic Commerce|A
+UCCE1074|Electronic Design And Testing|C
+2
+2
+UCCD3053|Information Technology Professional Ethics|B
+UCCD2043|Information Technology Project Management|A-
+1
+UCCD1213|Fundamentals Of Digital Media Technology|C
+3
+1
+UCCE1073|Digital Circuits And Devices|C
+2
+UCCD3074|Deep Learning For Data Science|B
+UCCE1073|Digital Circuits And Devices|C
+2
+UCCN2043|Digital Communications|C-
+UCCE2103|Digital Signal Processing|B
+3
+3
+UCCD1024|Data Structure and Algorithmic Problem Solving|B
+UCCD3233|Data Warehouse Modelling And Implementation|A-
+UCCD1203|Database Development And Application|C
+2
+UCCD3074|Deep Learning For Data Science|A
+UCCE1073|Digital Circuits And Devices|B+
+4
+UCCN2043|Digital Communications|A-
+UCCE2103|Digital Signal Processing|B
+UCCE2023|Digital Systems Design|A
+UCCM1363|Discrete Mathematics|A
+3
+3
+UCCD3113|Distributed Computer Systems|A-
+UCCD3003|Electronic Commerce|B+
+UCCE1074|Electronic Design And Testing|C
+1
+UCCD3053|Information Technology Professional Ethics|A
+4
+UCCB3133|Business Analytics|A-
+UCCG3133|Business Analytics|A
+UCCB2113|Business Information Management|B
+UCCB3104|Business Intelligence Information Systems|B+
+1
+1
+UCCD1213|Fundamentals Of Digital Media Technology|C
+2
+1
+UCCD1024|Data Structure and Algorithmic Problem Solving|B
+3
+UCCD3074|Deep Learning For Data Science|B
+UCCE1073|Digital Circuits And Devices|B-
+UCCN2043|Digital Communications|C+
+3
+3
+UCCD3113|Distributed Computer Systems|A-
+UCCD3003|Electronic Commerce|A
+UCCE1074|Electronic Design And Testing|C
+2
+UCCD3053|Information Technology Professional Ethics|A+
+UCCD2043|Information Technology Project Management|A-
+2
+UCCD3063|Innovation and Creative Management|A-
+UCCE1063|Integrated Circuit Fundamentals|B+
+1
+1
+UCCD1213|Fundamentals Of Digital Media Technology|C
+4
+4
+UCCB3144|Advanced Digital Media Technology|A
+UCCC2063|Algorithms Analysis|B
+UCCD1013|Analysis And Design Of Information Systems|A-
+UCCD2063|Artificial Intelligence Techniques|A-
+2
+UCCM1353|Basic Algebra|B+
+UCCE2093|Computational Intelligence|B-
+1
+UCCN1223|Cybersecurity|A-
+3
+UCCD3113|Distributed Computer Systems|A-
+UCCD3003|Electronic Commerce|A
+UCCE1074|Electronic Design And Testing|C
+2
+2
+UCCD3053|Information Technology Professional Ethics|B
+UCCD2043|Information Technology Project Management|A-
+1
+UCCD1213|Fundamentals Of Digital Media Technology|C
+3
+1
+UCCE1073|Digital Circuits And Devices|C
+2
+UCCD3074|Deep Learning For Data Science|B
+UCCE1073|Digital Circuits And Devices|C
+3
+UCCN2043|Digital Communications|C-
+UCCE2103|Digital Signal Processing|B
+UCCE2023|Digital Systems Design|C

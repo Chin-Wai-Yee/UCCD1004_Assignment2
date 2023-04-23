@@ -1,2 +1,6 @@
 Note:
 This program only save the data at the end, so please exit the program properly to make sure all the changes are saved to the file.
+The sample data is random generated and it could have some error in it
+(repeating course code taken by same student).
+However, the program should validate the input of user before writing to the file....
+So there would be no problem if the program is initialise have empty file...

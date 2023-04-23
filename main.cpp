@@ -552,9 +552,11 @@ void readFile(string file_name, People people[], int& count) {
 void readCourseFile(string file_name, People student[], int stu_num) {
 
     fstream file(file_name, ios::app | ios::in); // open file if exist, else create it
-
     // loop every student
     for (int i = 0; i < stu_num; i++) {
+        // This will actually slow down the program.... but it looks good in some way
+        system("cls");
+        cout << "\tLoading....." << (double)i*100/stu_num << "%" << endl;
         file >> student[i].trimester_num;
         for (int j = 0; j < student[i].trimester_num; j++) {
             file >> student[i].trimester[j].course_num;
@@ -569,7 +571,6 @@ void readCourseFile(string file_name, People student[], int stu_num) {
         }
         student[i].update();
     }
-
     file.close();
 }
 
@@ -616,7 +617,6 @@ void writeCourseFile(string file_name, People student[], int count){
             }
         }
         if (i != count - 1) {
-            file << "End here";
             file << endl;
         }
     }
