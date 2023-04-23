@@ -177,7 +177,15 @@ struct People {
     }
 
     void printStudent(int page = 1) {
-        cout << "  Course Mangement System" << endl;
+        string abc;
+        ifstream infile;
+        infile.open("Course Management System.txt");
+        while (!infile.eof())
+        {
+            getline(infile, abc);
+            cout << abc << endl;
+
+        }
         cout << setfill('-') << setw(SCREEN_WIDTH) << "" << setfill(' ') << endl;
         cout << "  Student ID : " << id << endl;
         cout << "  Name       : " << name << endl;
@@ -629,7 +637,7 @@ void mainMenu(People students[], People lecturers[], int& student_num, int& lect
     system("cls");
     string abc;
     ifstream infile;
-    infile.open("welcome.txt");
+    infile.open("Welcome to Student Management System.txt");
     while (!infile.eof())
     {
         getline(infile, abc);
@@ -750,7 +758,30 @@ void peopleMenu(People people[], int& total, string type, bool admin) {
     bool loop = true;
     while (loop) {
         system("cls");
-        cout << "  " << type << " Management System" << endl;
+        if (type == "Student")
+        {
+            string abc;
+            ifstream infile;
+            infile.open("Course Management System.txt");
+            while (!infile.eof())
+            {
+                getline(infile, abc);
+                cout << abc << endl;
+
+            }
+        }
+        else if (type == "Lecturer")
+        {
+            string abc;
+            ifstream infile;
+            infile.open("Lecturer Management System.txt");
+            while (!infile.eof())
+            {
+                getline(infile, abc);
+                cout << abc << endl;
+
+            }
+        }
         cout << endl;
         view(people, total, type, page, type == "Student", admin);
         cout << endl;
@@ -816,7 +847,15 @@ void adminMenu(People students[], int& student_num, People lecturers[], int& lec
     bool loop = true;
     while (loop) {
         system("cls");
-        cout << "  Admin Management System" << endl;
+        string abc;
+        ifstream infile;
+        infile.open("Admin Management System.txt");
+        while (!infile.eof())
+        {
+            getline(infile, abc);
+            cout << abc << endl;
+
+        }
         cout << endl;
         cout << "  1. Student Management" << endl;
         cout << "  2. Lecturer Management" << endl;
