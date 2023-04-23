@@ -762,7 +762,7 @@ void peopleMenu(People people[], int& total, string type, bool admin) {
         {
             string abc;
             ifstream infile;
-            infile.open("Course Management System.txt");
+            infile.open("Student Management System.txt");
             while (!infile.eof())
             {
                 getline(infile, abc);
