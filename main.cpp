@@ -1109,7 +1109,7 @@ void searchPeople(People people[], int total, string type, bool admin) {
     {
         system("cls");
         cout << search_result;
-        view(people, result, search_result_num, type, page, admin);
+        view(people, result, search_result_num, type, page, type=="Student", admin);
         cout << "  0. Back" << endl;
         cout << endl;
         cout << "  Please enter your option : ";
