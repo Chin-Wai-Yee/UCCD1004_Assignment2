@@ -307,7 +307,7 @@ struct People {
         bool loop = true;
         int newIndex, semester, year;
         int step = 1;
-        string course_code, course_name, gred;
+        string course_code, course_name, gred, temp;
         do
         {
             system("cls");
@@ -327,30 +327,35 @@ struct People {
                             cout << "  Please enter again!" << endl;
                             cout << "  "; system("pause");
                         }
-                        else if (getCourseCode("  Enter new course code" + prompt, course_code, loop, update_info))
+                        else
                         {
-                            int search = getIndex(course_code);
-                            if (search != -1)
-                            {
-                                cout << "  Course code already exist!" << endl;
-                                cout << "  Please enter again!" << endl;
-                                cout << "  "; system("pause");
-                            }
-                            else
-                            {
-                                semester = newIndex / MAX_COURSES;
-                                newIndex = newIndex % MAX_COURSES;
-                                if (course_code == "")
-                                {
-                                    course_code = trimester[semester].course[newIndex].code;
-                                }
-                                cout << course_code << endl;
-                                header += "  Course code : " + course_code + "\n";
-                                step++;
-                            }
+                            temp = course_code;
+                            step++;
                         }
                     }
-                    else if (newIndex != -1)
+                    else 
+                    {
+                        if (newIndex != -1)
+                        {
+                            cout << "  Course code already exist!" << endl;
+                            cout << "  Please enter again!" << endl;
+                            cout << "  "; system("pause");
+                        }
+                        else
+                        {
+                            header += "  Course code : " + course_code + "\n";
+                            step+=2;
+                        }
+                    }
+                }
+            }
+
+            else if (step == 2)
+            {
+                cout << "  Current course code : " << temp << endl;
+                if (getCourseCode("  Enter new course code" + prompt, course_code, loop, update_info))
+                {
+                    if (getIndex(course_code) != -1)
                     {
                         cout << "  Course code already exist!" << endl;
                         cout << "  Please enter again!" << endl;
@@ -358,12 +363,20 @@ struct People {
                     }
                     else
                     {
+                        semester = newIndex / MAX_COURSES;
+                        newIndex = newIndex % MAX_COURSES;
+                        if (course_code == "")
+                        {
+                            course_code = trimester[semester].course[newIndex].code;
+                        }
+                        cout << course_code << endl;
                         header += "  Course code : " + course_code + "\n";
                         step++;
                     }
                 }
             }
-            else if (step == 2)
+
+            else if (step == 3)
             {   if (getCourseName("  Enter course name" + prompt, course_name, loop, update_info))
                 {
                     if (course_name == "")
@@ -374,7 +387,7 @@ struct People {
                     step++;
                 }
             }
-            else if (step == 3)
+            else if (step == 4)
             {
                 if (getGred("  Enter gred" + prompt, gred, loop, update_info))
                 {
@@ -390,7 +403,7 @@ struct People {
                     step++;
                 }
             }
-            else if (step == 4)
+            else if (step == 5)
             {
                 if (getNum("  Enter study year" + prompt, year, 1, MAX_TRIMESTER/3, loop))
                 {
@@ -398,22 +411,23 @@ struct People {
                     step++;
                 }
             }
-            else if (step == 5)
+            else if (step == 6)
             {
                 if(getNum("  Enter trimester number" + prompt, semester, 1, 3, loop))
                 {
                     semester = (year - 1) * 3 + semester - 1;
                     if (semester > trimester_num + 1)
                     {
-                        header = header.substr(0, header.size() - 16);
+                        header = header.substr(0, header.size() - 18);
                         cout << "  Out of range..." << endl;
+                        cout << "  Maximum study year is: 5, maximum trimester in each year is: 3" << endl;
                         cout << "  Please enter again..." << endl;
                         step--;
                         cout << "  "; system("pause");
                     }
                     else if (semester != 0 && trimester[semester - 1].course_num == 0)
                     {
-                        header = header.substr(0, header.size() - 16);
+                        header = header.substr(0, header.size() - 18);
                         cout << "  Please enter the course information for the previous trimester first." << endl;
                         cout << "  Please enter again..." << endl;
                         step--;
@@ -421,7 +435,7 @@ struct People {
                     }
                     else if (trimester[semester].course_num == MAX_COURSES)
                     {
-                        header = header.substr(0, header.size() - 16);
+                        header = header.substr(0, header.size() - 18);
                         cout << "  Maximum number of courses reached..." << endl;
                         cout << "  Please enter again..." << endl;
                         step--;
@@ -439,9 +453,12 @@ struct People {
                     }
                 }
             }
-            else if (step == 6)
+            else if (step == 7)
             {
-                trimester[semester].course_num++;
+                if (!update_info)
+                {
+                    trimester[semester].course_num++;
+                }
                 trimester[semester].course[newIndex].name = course_name;
                 trimester[semester].course[newIndex].code = course_code;
                 trimester[semester].course[newIndex].gred = gred;
@@ -978,7 +995,11 @@ bool testCourseCode(string input)
 	if (input.size() != 8)
 	{
 		return false;
-	}
+    }
+    if (input.back() == '0')
+	{
+        return false;
+    }
 	// accept the array arg and test the first three characters for alphabetic letters.
 	for (count = 0; count < 4; count++)
 	{
@@ -1109,7 +1130,7 @@ bool getNum (string prompt, int& output, int size, int limit, bool& loop) {
         loop = false;
         return false;
     }
-    else if (input.size() > size) {
+    else if (input.size() != size) {
         cout << "  Invalid input, please try again." << endl;
         cout << "  "; system("pause");
         return false;
@@ -1117,14 +1138,14 @@ bool getNum (string prompt, int& output, int size, int limit, bool& loop) {
     else {
         for (int i = 0; i < input.size(); i++) {
             if (!isdigit(input[i])) {
-                cout << "  Invalid input, please try again." << endl;
+                cout << "  Invalid input, please enter a number." << endl;
                 cout << "  "; system("pause");
                 return false;
             }
         }
         output = stoi(input);
         if (output < 1 || output > limit) {
-            cout << "  Invalid input, please try again." << endl;
+            cout << "  Number is not within acceptable range, please try again." << endl;
             cout << "  "; system("pause");
             return false;
         }
@@ -1146,7 +1167,7 @@ bool getCourseCode (string prompt, string& code, bool& loop, bool accept_empty) 
     else {
         cout << "  That is not the proper format of the course code." << endl;
         cout << "  Here is an example : LLLLNNNN" << endl;
-        cout << "  (L = letters and N = numbers)" << endl;
+        cout << "  (L = letters and N = numbers), the last digit cannot be 0" << endl;
         cout << "  "; system("pause");
         return false;
     }
