@@ -34,6 +34,7 @@ bool   getCourseName (string, string&, bool&, bool accept_empty = false);
 bool   getGred (string, string&, bool&, bool accept_empty = false);
 bool   confirm(string, bool&);
 void   readBanner(string, string&);
+int    roundUp(int, int);
 
 //========================================================================================================================//
 // For decoration purpose, banner in string format
@@ -73,12 +74,12 @@ struct Course {
     }
 
     void print() {
-        cout << code << "\t" << setw(60) << left << name << "\t" << gred << "\t" << right << credit_hour << "\t";
+        cout << code << "\t" << setw(60) << left << name << "\t" << gred << "\t" << right << credit_hour;
     }
 
     void printFile(string filename) {
         fstream file(filename, ios::app);
-        file << code << "\t" << setw(60) << left << name << "\t" << gred << "\t" << right << credit_hour << "\t";
+        file << code << " " << setw(60) << left << name << " " << setw(6) << gred << right << setw(6) << credit_hour;
         file.close();
     }
 
@@ -130,9 +131,10 @@ struct Trimester {
     void printFile(string filename) {
         fstream file(filename, ios::app);
         for (int i = 0; i < course_num; i++) {
-            file << setw(4) << right << i+1 << ".  ";
-            course[i].printFile(filename);
-            file << endl;
+        // Using flush to write to file immediately
+        file << setw(4) << right << i+1 << ".  " << flush;
+        course[i].printFile(filename);
+        file << endl;
         }
         file << setfill('-') << setw(SCREEN_WIDTH) << "" << setfill(' ') << endl;
         file << "  Total credit hour : " << setw(6) << right << total_credit_hour << endl;
@@ -231,6 +233,8 @@ struct People {
     }
 
     void printFile(string filename) {
+        fstream temp(filename, ios::out);
+        temp.close();
         fstream file(filename, ios::app);
         file << course_manage;
         file << setfill('=') << setw(SCREEN_WIDTH) << "" << setfill(' ') << endl;
@@ -239,9 +243,9 @@ struct People {
         file << setfill('=') << setw(SCREEN_WIDTH) << "" << setfill(' ') << endl;
 
         for (int i = 0; i < trimester_num; i++) {
-            file << "  Year " << trimester_num / 3 << " Trimester " << i % 3 + 1 << endl;
+            file << "  Year " << i/3 + 1 << " Trimester " << i % 3 + 1 << endl;
             file << setfill('=') << setw(SCREEN_WIDTH) << "" << setfill(' ') << endl;
-            file << "  No.  Code\t" << setw(60) << left << "Course name" << "\tGred" << "\tCredit Hour" << endl;
+            file << setw(15) << left << "  No.  Code" << setw(60) << " Course name" << " Gred " << " Credit Hour" << endl;
             file << setfill('=') << setw(SCREEN_WIDTH) << "" << setfill(' ') << endl;
             trimester[i].printFile(filename);
             file << setfill('-') << setw(SCREEN_WIDTH) << "" << setfill(' ') << endl;
@@ -1320,6 +1324,7 @@ void modifyPeopleInfo(People people[], int& newIndex, string type, int page, boo
         prompt += " <Enter> - Keep the current value";    
     }
     prompt += ") : ";
+    string header = "";
 
     string name, id, password;
 	while (loop)
