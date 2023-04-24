@@ -241,6 +241,7 @@ struct People {
         file << "  Student ID : " << id << endl;
         file << "  Name       : " << name << endl;
         file << setfill('=') << setw(SCREEN_WIDTH) << "" << setfill(' ') << endl;
+        file << endl;
 
         for (int i = 0; i < trimester_num; i++) {
             file << "  Year " << i/3 + 1 << " Trimester " << i % 3 + 1 << endl;
@@ -326,7 +327,7 @@ struct People {
                             cout << "  Please enter again!" << endl;
                             cout << "  "; system("pause");
                         }
-                        else if (getCourseCode("  Enter course code" + prompt, course_code, loop, update_info))
+                        else if (getCourseCode("  Enter new course code" + prompt, course_code, loop, update_info))
                         {
                             int search = getIndex(course_code);
                             if (search != -1)
@@ -591,6 +592,10 @@ void readBanner (string filename, string& output) {
             getline(file, temp);
             output += temp + "\n";
         }
+    }
+    else {
+        cout << "  Banner file is not found, please check if all folder is exist" << endl;
+        system("pause");
     }
 }
 
@@ -1181,10 +1186,13 @@ bool getGred (string prompt, string& gred, bool& loop, bool accept_empty) {
     }
 }
 
-bool getID (string prompt, string& id, bool& loop, bool is_student = true) {
+bool getID (string prompt, string& id, bool& loop, bool is_student = true, bool accept_empty = false) {
     cout << prompt;
     getline(cin, id);
     if (id == "") {
+        if (accept_empty) {
+            return true;
+        }
         cout << "  Invalid input, please try again." << endl;
         cout << "  The ID cannot be empty." << endl;
         cout << "  "; system("pause");
@@ -1219,7 +1227,7 @@ bool getID (string prompt, string& id, bool& loop, bool is_student = true) {
     }
 }
 
-bool getName (string prompt, string& name, bool& loop, bool accept_empty) {
+bool getName (string prompt, string& name, bool& loop, bool accept_empty = false) {
     cout << prompt;
     getline(cin, name);
     if (name == "0") {
@@ -1242,7 +1250,7 @@ bool getPassword(string prompt, string& password, bool& loop) {
     cout << prompt;
     getline(cin, password);
     if (password == "") {
-        return confirm("  This will set no password for you, are you sure? (Y/N) ", loop);
+        return confirm("  This will set no password for you, are you sure? (Y/N) : ", loop);
     }
     for (int i = 0; i < password.size(); i++) {
         if (password[i] == ' ') {
@@ -1331,31 +1339,59 @@ void modifyPeopleInfo(People people[], int& newIndex, string type, int page, boo
 	{
         system("cls");
         view(people, size, type, page, type == "Student", admin);
-		string input;
+        cout << endl;
+		
+        cout << header;
 		if (step == 1)
 		{
-            if(getID("  Please enter ID" + prompt, id, loop, type == "Student"))
+            if(getID("  Please enter ID (0 - Exit) : ", id, loop, type == "Student"))
             {
+                bool proceed = true;
                 int search = getIndex(people, newIndex, id);
-                if (update && search == -1)
+                if (update)
                 {
-                    cout << "  ID not found!" << endl;
-                    cout << "  Please enter again!" << endl;
-                    cout << "  "; system("pause");
-                }
-                else if (!update && search != -1)
-                {
-                    cout << "  ID already exists!" << endl;
-                    cout << "  Please enter again!" << endl;
-                    cout << "  "; system("pause");
-                }
-                else
-                {
-                    if (update)
+                    i = search;
+                    if (search == -1)
                     {
-                        i = search;
+                        cout << "  ID not found!" << endl;
+                        cout << "  Please enter again!" << endl;
+                        cout << "  "; system("pause");
+                        proceed = false;
                     }
-                    step++;
+                    else
+                    {
+                        if(getID("  Please enter new ID : " + prompt, id, loop, type == "Student", true))
+                        {
+                            if (id == "")
+                            {
+                                id = people[search].id;
+                                search = -1;
+                            }
+                            else
+                            {
+                                search = getIndex(people, newIndex, id);
+                            }
+                        }
+                        else
+                        {
+                            proceed = false;
+                        }
+                    }
+                }
+                if (proceed)
+                {
+                    if (search != -1)
+                    {
+                        cout << "  ID already exists!" << endl;
+                        cout << "  Please enter again!" << endl;
+                        cout << "  "; system("pause");
+                    }
+
+                    else
+                    {
+                        header += "  " + type + "  ID : " + id + "\n";
+                        step++;
+                    }
                 }
             }
 		}
@@ -1364,18 +1400,20 @@ void modifyPeopleInfo(People people[], int& newIndex, string type, int page, boo
 		{
             if(getName("  Please enter name" + prompt, name, loop, update))
             {
-                if (update && name == "")
+                if (name == "")
                 {
                     name = people[i].name;
                 }
+                header += "  " + type + "  Name : " + name + "\n";
                 step++;
             }
 		}
         
         else if (step == 3)
         {
-            if(getPassword("  Please enter password" + prompt, password, loop))
+            if(getPassword("  Please enter password (0 - Exit) : ", password, loop))
             {
+                header += "  " + type + "  Password : " + password + "\n";
                 loop = true;
                 step++;
             }
