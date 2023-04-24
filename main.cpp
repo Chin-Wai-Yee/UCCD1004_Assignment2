@@ -32,6 +32,7 @@ bool   getNum (string, int&, int, int, bool&);
 bool   getCourseCode (string, string&, bool&, bool accept_empty = false);
 bool   getCourseName (string, string&, bool&, bool accept_empty = false);
 bool   getGred (string, string&, bool&, bool accept_empty = false);
+bool   getPassword (string, string&);
 bool   confirm(string, bool&);
 void   readBanner(string, string&);
 int    roundUp(int, int);
@@ -535,6 +536,50 @@ struct People {
         } while (loop);
     }
 
+    void editPassword(int page)
+    {
+        int step = 1;
+        if (password == "")
+        {
+            step ++;
+        }
+        bool loop = true;
+        string input;
+        while (loop)
+        {
+            system("cls");
+            printStudent(page);
+            if (step == 1)
+            {
+                cout << "  Please enter your original password : ";
+                getline(cin, input);
+                if (input == password)
+                {
+                    step = true;
+                }
+                else
+                {
+                    cout << "  Wrong password, please try again..." << endl;
+                    cout << "  "; system("pause");
+                }
+            }
+            else if (step == 2)
+            {
+                if(getPassword("  Please enter a new password : ", input))
+                {
+                    step++;
+                }
+            }
+            else if (step == 3)
+            {
+                password = input;
+                cout << "  Password successfully changed!" << endl;
+                loop = false;
+                cout << "  "; system("pause");
+            }
+        }
+
+    }
 };
 
 //========================================================================================================================//
@@ -799,6 +844,9 @@ void courseMenu(People& student, bool is_lecturer) {
             cout << "  3. Edit course" << endl;
             cout << "  4. Delete course" << endl;
         }
+        else {
+            cout << "  2. Edit password" << endl;
+        }
         cout << endl;
 
         cout << "  0. Exit" << endl;
@@ -820,7 +868,7 @@ void courseMenu(People& student, bool is_lecturer) {
         else if (flip(page, max_page, option)) {
             // Do nothing
         }
-        else if (is_lecturer) {
+        if (is_lecturer) {
             if (option == "2") {
                 student.addCourseInfo(page);
             }
@@ -830,6 +878,9 @@ void courseMenu(People& student, bool is_lecturer) {
             else if (option == "4") {
                 student.deleteCourse(page);
             }
+        }
+        else if (!is_lecturer && option == "2") {
+            student.editPassword(page);
         }
         else {
             cout << "  Invalid option" << endl;
@@ -1484,40 +1535,40 @@ void deletePeople(People people[], int& newIndex, string type, int page, bool ad
         view(people, newIndex, type, page, type == "Student", admin);
         cout << endl;
         string id;
-        getID("  Please enter " + type + " ID to delete : ", id, loop, type == "Student");
-        cout << endl;
-
-        int i = getIndex(people, newIndex, id);
-        if (i == -1)
+        if(getID("  Please enter " + type + " ID to delete (0 - Exit) : ", id, loop, type == "Student"))
         {
-            cout << "  " << type << " ID not found!" << endl;
-            cout << "  Please enter agian!" << endl;
-            cout << "  "; system("pause");
-        }
-        else
-        {
-            while (loop)
+            int i = getIndex(people, newIndex, id);
+            if (i == -1)
             {
-                system("cls");
-                view(people, newIndex, type, page, type == "Student", admin);
-                cout << endl;
-                cout << "  Are you sure you want to delete this " << type << "?" << endl;
-                cout << endl;
-                cout << "  \033[4m" << type << " Information\033[0m" << endl;
-                cout << "  " << type << "  ID : " << people[i].id << endl;
-                cout << "  " << type << "  Name : " << people[i].name << endl;
-                if (confirm("  Confirm (Y/N) : ", loop))
+                cout << "  " << type << " ID not found!" << endl;
+                cout << "  Please enter agian!" << endl;
+                cout << "  "; system("pause");
+            }
+            else
+            {
+                while (loop)
                 {
-                    for (; i < newIndex - 1; i++)
-                    {
-                        people[i] = people[i + 1];
-                    }
-                    newIndex--;
                     system("cls");
                     view(people, newIndex, type, page, type == "Student", admin);
                     cout << endl;
-                    cout << "  " << type << " deleted!" << endl;
-                    cout << "  "; system("pause");
+                    cout << "  Are you sure you want to delete this " << type << "?" << endl;
+                    cout << endl;
+                    cout << "  \033[4m" << type << " Information\033[0m" << endl;
+                    cout << "  " << type << "  ID : " << people[i].id << endl;
+                    cout << "  " << type << "  Name : " << people[i].name << endl;
+                    if (confirm("  Confirm (Y/N) : ", loop))
+                    {
+                        for (; i < newIndex - 1; i++)
+                        {
+                            people[i] = people[i + 1];
+                        }
+                        newIndex--;
+                        system("cls");
+                        view(people, newIndex, type, page, type == "Student", admin);
+                        cout << endl;
+                        cout << "  " << type << " deleted!" << endl;
+                        cout << "  "; system("pause");
+                    }
                 }
             }
         }
