@@ -39,7 +39,7 @@ int    roundUp(int, int);
 
 //========================================================================================================================//
 // For decoration purpose, banner in string format
-string admin_manage, course_manage, lecturer_manage, search_result, student_manage, welcome;
+string admin_manage, course_manage, lecturer_manage, search_result, student_manage, welcome, report;
 
 //========================================================================================================================//
 // Declaration of structs
@@ -259,6 +259,21 @@ struct People {
         file << "  Cgpa                          : " << setprecision(4) << fixed << cgpa << endl;
         file << endl;
         file.close();
+    }
+
+    string status () {
+        if (cgpa >= 3.85) {
+            return "President's List";
+        }
+        else if (cgpa >= 3.6) {
+            return "Dean's List";
+        }
+        else if (cgpa < 2 && course_num != 0) {
+            return "Probation";
+        }
+        else {
+            return "Normal";
+        }
     }
 
     // update the cgpa and total credit hour of the student
@@ -611,6 +626,8 @@ void   searchPeople(People[], int, string, bool admin = false);
 void   view(People[], int, string, int, bool show_cgpa = false, bool show_password = false);
 void   view(People[], int[], int, string, int, bool show_cgpa = false, bool show_password = false);
 bool   login(People[], int, int&);
+void   list(People[], int);
+void printList(People student[], int result[], int result_num, string status);
 
 
 People students[MAX_STUDENTS]; // Array to store People data
@@ -629,6 +646,7 @@ int main(void) {
     readBanner("banner\\Search Result.txt", search_result);
     readBanner("banner\\Student Management System.txt", student_manage);
     readBanner("banner\\Welcome to Student Management System.txt", welcome);
+    readBanner("banner\\Report.txt", report);
 
     // Read file and get current number of students in the array
     int student_num, lecturer_num;
@@ -637,6 +655,7 @@ int main(void) {
     readCourseFile("course_list.txt", students, student_num);
     // Start the program
 
+    list(students, student_num);
     bool exit = false;
     while (!exit) {
        mainMenu(students, lecturers, student_num, lecturer_num, exit);
@@ -905,6 +924,7 @@ void peopleMenu(People people[], int& total, string type, bool admin) {
         cout << "  4. Search " << type << endl;
         if (type == "Student") {
             cout << "  5. View "   << type << " course" << endl;
+            cout << "  6. View overall student performance" << endl;
         }
         cout << endl;
         cout << "  0. Exit" << endl;
@@ -944,6 +964,9 @@ void peopleMenu(People people[], int& total, string type, bool admin) {
                 cout << "  Student not found, please try again." << endl;
                 cout << "  "; system("pause");
             }
+        }
+        else if (option == "6" && type == "Student") {
+            list(people, total);
         }
         else if (option == "0") {
             cout << "  Exiting..." << endl;
@@ -1172,6 +1195,62 @@ int getIndex(People Students[], int student_num, string id) {
         }
     }
     return -1;
+}
+
+void list(People student[], int size) {
+    system("cls");
+    int result[4][MAX_STUDENTS];
+    int result_num[4] = { 0, 0, 0, 0 };
+    /// result[0] = President's List
+    /// result[1] = Dean's List
+    /// result[2] = Probation
+    /// result[3] = Normal
+    for (int i = 0; i < size; i++) {
+        if (student[i].status() == "President's List") {
+            result[0][result_num[0]] = i;
+            result_num[0]++;
+        }
+        else if (student[i].status() == "Dean's List") {
+            result[1][result_num[1]] = i;
+            result_num[1]++;
+        }
+        else if (student[i].status() == "Probation") {
+            result[2][result_num[2]] = i;
+            result_num[2]++;
+        }
+        else {
+            result[3][result_num[3]] = i;
+            result_num[3]++;
+        }
+    }
+    cout << report;
+    printList(student, result[0], result_num[0], "President's List (CGPA >= 3.85) ");
+    printList(student, result[1], result_num[1], "Dean's List (3.60 <= CGPA < 3.85) ");
+    printList(student, result[3], result_num[3], "Normal (2.00 <= CGPA < 3.60) ");
+    printList(student, result[2], result_num[2], "Probation (CGPA < 2.00) ");
+    cout << "  President's List : " << setw(4) << right << result_num[0] << endl;
+    cout << "  Dean's List      : " << setw(4) << right << result_num[1] << endl;
+    cout << "  Normal           : " << setw(4) << right << result_num[3] << endl;
+    cout << "  Probation        : " << setw(4) << right << result_num[2] << endl;
+    system("pause");
+}
+
+void printList(People student[], int result[], int result_num, string status) {
+    cout << "  \033[1;4m" << status << "\033[0m" << endl;
+    cout << "  \033[4m" << setw(6) << right << "No.";
+    cout << "  " << left << setw(15) << "ID";
+    cout << "  " << left << setw(60) << "Name";
+    cout << "  " << "CGPA  " << "\033[0m" << endl;
+    for (int i = 0; i < result_num; i++) {
+        cout << "  " << setw(5) << right << i + 1 << ".";
+        cout << "  " << left << setw(15) << student[result[i]].id;;
+        cout << "  " << left << setw(60) << student[result[i]].name;
+        cout << "  " << setprecision(4) << fixed << student[result[i]].cgpa << endl;
+    }
+    if (result_num == 0) {
+        cout << "     No student in this category" << endl;
+    }
+    cout << endl;
 }
 
 int getGpa(string gred) {

@@ -1,7 +1,7 @@
 1111111|Test Student|
 2103133|Wong Kok Kok|abc
 2101234|Li Lei|abc
-2103370|Chin Wai Yee|yee<0521>!
+2103370|Chin Wai Yee|abc
 2106720|Han Mei Mei|abc
 2114514|Li Lao Han|abc
 1234567|Ni Hao A|
