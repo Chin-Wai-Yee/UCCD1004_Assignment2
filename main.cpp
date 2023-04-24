@@ -782,9 +782,9 @@ void mainMenu(People students[], People lecturers[], int& student_num, int& lect
 */
 void courseMenu(People& student, bool is_lecturer) {
     bool loop = true;
-    int page = 1;
-    int max_page = roundUp(student.trimester_num, 3);
+    int page = 1, max_page;
     while (loop) {
+        max_page = roundUp(student.trimester_num, 3);
         system("cls");
         student.printStudent(page);
         
@@ -1272,11 +1272,12 @@ bool getName (string prompt, string& name, bool& loop, bool accept_empty = false
     }
 }
 
-bool getPassword(string prompt, string& password, bool& loop) {
+bool getPassword(string prompt, string& password) {
     cout << prompt;
     getline(cin, password);
+    bool dumb;
     if (password == "") {
-        return confirm("  This will set no password for you, are you sure? (Y/N) : ", loop);
+        return confirm("  This will set no password for you, are you sure? (Y/N) : ", dumb);
     }
     for (int i = 0; i < password.size(); i++) {
         if (password[i] == ' ') {
@@ -1303,8 +1304,8 @@ bool confirm(string prompt, bool& loop) {
     }
     else {
         cout << "  Invalid input, please try again." << endl;
-        loop = true;
         cout << "  "; system("pause");
+        loop = true;
         return false;
     }
 }
@@ -1440,13 +1441,17 @@ void modifyPeopleInfo(People people[], int& newIndex, string type, int page, boo
                 header += "  " + type + "  Name : " + name + "\n";
                 step++;
             }
+            if (!admin)
+            {
+                // Only admin can add & change password
+                step++;
+            }
 		}
         
         else if (step == 4)
         {
-            if(getPassword("  Please enter password (0 - Exit) : ", password, loop))
+            if(getPassword("  Please enter password (0 - Exit) : ", password))
             {
-                loop = true;
                 step++;
             }
         }
