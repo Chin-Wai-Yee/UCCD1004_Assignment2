@@ -555,11 +555,12 @@ struct People {
                 getline(cin, input);
                 if (input == password)
                 {
-                    step = true;
+                    step++;
                 }
                 else
                 {
-                    cout << "  Wrong password, please try again..." << endl;
+                    loop = false;
+                    cout << "  Wrong password, back to menu..." << endl;
                     cout << "  "; system("pause");
                 }
             }
@@ -597,7 +598,9 @@ bool   testStudentId(string);
 bool   testName(string, int max_size = MAX_NAME_LENGTH);
 bool   testCourseCode(string);
 string toUpper(string);
+void   trim(string&);
 int    roundUp(int, int);
+
 int    searchEngine(People[], int, string, int[]);
 int    getIndex(People[], int, string);
 void   modifyPeopleInfo(People[], int&, string, int, bool admin = false, bool update = false);
@@ -855,29 +858,27 @@ void courseMenu(People& student, bool is_lecturer) {
         cout << "  Please enter your option : ";
         string option;
         getline(cin, option);
-        if (option == "1") {
-            student.printFile(student.name + ".txt");
-            cout << "  File saved to " << student.name << ".txt" << endl;
-            cout << "  "; system("pause");
-        }
-        else if (option == "0") {
+        if (option == "0") {
             cout << "  Exiting..." << endl;
             loop = false;
+            cout << "  "; system("pause");
+        }
+        else if (option == "1") {
+            student.printFile(student.name + ".txt");
+            cout << "  File saved to " << student.name << ".txt" << endl;
             cout << "  "; system("pause");
         }
         else if (flip(page, max_page, option)) {
             // Do nothing
         }
-        if (is_lecturer) {
-            if (option == "2") {
-                student.addCourseInfo(page);
-            }
-            else if (option == "3") {
-                student.addCourseInfo(page, true);
-            }
-            else if (option == "4") {
-                student.deleteCourse(page);
-            }
+        else if (option == "2" && is_lecturer) {
+            student.addCourseInfo(page);
+        }
+        else if (option == "3" && is_lecturer) {
+            student.addCourseInfo(page, true);
+        }
+        else if (option == "4" && is_lecturer) {
+            student.deleteCourse(page);
         }
         else if (!is_lecturer && option == "2") {
             student.editPassword(page);
@@ -1020,7 +1021,7 @@ bool testStudentId(string input)
 */
 bool testName(string input, int max_size)
 {
-    if (input == "" || input.size() > max_size)
+    if (input == "" || input.size() > max_size || input[0] == ' ')
     {
         return false;
     }
@@ -1077,6 +1078,19 @@ string toUpper(string str) {
         str[i] = toupper(str[i]);
     }
     return str;
+}
+
+void trim(string& str) {
+    // Using two pointers to remove the spaces
+    int start = 0;
+    int end = str.size() - 1;
+    while (str[start] == ' ') {
+        start++;
+    }
+    while (str[end] == ' ') {
+        end--;
+    }
+    str = str.substr(start, end - start + 1);
 }
 
 int roundUp(int dividend, int divisor) {
@@ -1227,6 +1241,7 @@ bool getCourseCode (string prompt, string& code, bool& loop, bool accept_empty) 
 bool getCourseName (string prompt, string& name, bool& loop, bool accept_empty) {
     cout << prompt;
     getline(cin, name);
+    trim(name);
     if (name == "0") {
         loop = false;
         return false;
@@ -1307,6 +1322,7 @@ bool getID (string prompt, string& id, bool& loop, bool is_student = true, bool 
 bool getName (string prompt, string& name, bool& loop, bool accept_empty = false) {
     cout << prompt;
     getline(cin, name);
+    trim(name);
     if (name == "0") {
         loop = false;
         return false;

@@ -13,7 +13,7 @@ FHSC1014|Mechanics|C+
 1
 1
 FHMM1014|Mathematics I|A
-7
+4
 4
 FHBM1114|Management|A
 FHCT1012|Computing Technology|A
@@ -31,12 +31,6 @@ FHSB1214|Biology I|A+
 FHSC1014|Mechanics |A
 FHSC1024|Thermodynamics and Electromagnetism|F
 FHSC1114|Physical Chemistry|A
-1
-FJEI1849|f|A
-1
-FJEI1414|j|C
-1
-JFIE4819|fuck|B
 1
 1
 FHCT1012|Computing Technology|A
