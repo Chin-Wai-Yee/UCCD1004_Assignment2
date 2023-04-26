@@ -45,7 +45,7 @@ string admin_manage, course_manage, lecturer_manage, search_result, student_mana
 // Declaration of structs
 
 // Gred list
-struct Gred {
+struct {
     string gred;
     double gpa;
 } gred_list[] = {
@@ -329,29 +329,48 @@ struct People {
             system("cls");
             printStudent(page);
             cout << header;
-
-            if (step == 1)
+            switch (step)
             {
-                if (getCourseCode("  Enter course code (0 - Exit) : ", course_code, loop, update_info))
-                {
-                    newIndex = getIndex(course_code);
-                    if (update_info)
+                case 1:
+                    if (getCourseCode("  Enter course code (0 - Exit) : ", course_code, loop, update_info))
                     {
-                        if (newIndex == -1)
+                        newIndex = getIndex(course_code);
+                        if (update_info)
                         {
-                            cout << "  Course code not found!" << endl;
-                            cout << "  Please enter again!" << endl;
-                            cout << "  "; system("pause");
+                            if (newIndex == -1)
+                            {
+                                cout << "  Course code not found!" << endl;
+                                cout << "  Please enter again!" << endl;
+                                cout << "  "; system("pause");
+                            }
+                            else
+                            {
+                                temp = course_code;
+                                step++;
+                            }
                         }
-                        else
+                        else 
                         {
-                            temp = course_code;
-                            step++;
+                            if (newIndex != -1)
+                            {
+                                cout << "  Course code already exist!" << endl;
+                                cout << "  Please enter again!" << endl;
+                                cout << "  "; system("pause");
+                            }
+                            else
+                            {
+                                header += "  Course code : " + course_code + "\n";
+                                step+=2;
+                            }
                         }
                     }
-                    else 
+                    break;
+
+                case 2:
+                    cout << "  Current course code : " << temp << endl;
+                    if (getCourseCode("  Enter new course code" + prompt, course_code, loop, update_info))
                     {
-                        if (newIndex != -1)
+                        if (getIndex(course_code) != -1)
                         {
                             cout << "  Course code already exist!" << endl;
                             cout << "  Please enter again!" << endl;
@@ -359,133 +378,103 @@ struct People {
                         }
                         else
                         {
+                            semester = newIndex / MAX_COURSES;
+                            newIndex %= MAX_COURSES;
+                            if (course_code == "")
+                            {
+                                course_code = trimester[semester].course[newIndex].code;
+                            }
                             header += "  Course code : " + course_code + "\n";
-                            step+=2;
+                            step++;
                         }
                     }
-                }
-            }
+                    break;
 
-            else if (step == 2)
-            {
-                cout << "  Current course code : " << temp << endl;
-                if (getCourseCode("  Enter new course code" + prompt, course_code, loop, update_info))
-                {
-                    if (getIndex(course_code) != -1)
+                case 3:
+                    if (getCourseName("  Enter course name" + prompt, course_name, loop, update_info))
                     {
-                        cout << "  Course code already exist!" << endl;
-                        cout << "  Please enter again!" << endl;
-                        cout << "  "; system("pause");
-                    }
-                    else
-                    {
-                        semester = newIndex / MAX_COURSES;
-                        newIndex = newIndex % MAX_COURSES;
-                        if (course_code == "")
+                        if (course_name == "")
                         {
-                            course_code = trimester[semester].course[newIndex].code;
+                            course_name = trimester[semester].course[newIndex].name;
                         }
-                        cout << course_code << endl;
-                        header += "  Course code : " + course_code + "\n";
+                        header += "  Course name : " + course_name + "\n";
                         step++;
                     }
-                }
-            }
-
-            else if (step == 3)
-            {   if (getCourseName("  Enter course name" + prompt, course_name, loop, update_info))
-                {
-                    if (course_name == "")
+                    break;
+                
+                case 4:
+                    if (getGred("  Enter gred" + prompt, gred, loop, update_info))
                     {
-                        course_name = trimester[semester].course[newIndex].name;
-                    }
-                    header += "  Course name : " + course_name + "\n";
-                    step++;
-                }
-            }
-            else if (step == 4)
-            {
-                if (getGred("  Enter gred" + prompt, gred, loop, update_info))
-                {
-                    if (update_info)
-                    {
-                        step += 2; // Skip study year and trimester
-                        if (gred == "")
+                        if (update_info)
                         {
-                            gred = trimester[semester].course[newIndex].gred;
+                            step += 2; // Skip study year and trimester
+                            if (gred == "")
+                            {
+                                gred = trimester[semester].course[newIndex].gred;
+                            }
+                        }
+                        header += "  Course Gred : " + gred + "\n";
+                        step++;
+                    }
+                    break;
+                
+                case 5:
+                    if (getNum("  Enter study year" + prompt, year, 1, MAX_TRIMESTER/3, loop))
+                    {
+                        header += "  Study year  : " + to_string(year) + "\n";
+                        step++;
+                    }
+                    break;
+
+                case 6:
+                    if(getNum("  Enter trimester number" + prompt, semester, 1, 3, loop))
+                    {
+                        semester = (year - 1) * 3 + semester - 1;
+                        if (semester != 0 && trimester[semester - 1].course_num == 0)
+                        {
+                            header = header.substr(0, header.size() - 18);
+                            cout << "  Please enter the course information for the previous trimester first." << endl;
+                            cout << "  Please enter again..." << endl;
+                            step--;
+                            cout << "  "; system("pause");
+                        }
+                        else if (trimester[semester].course_num == MAX_COURSES)
+                        {
+                            header = header.substr(0, header.size() - 18);
+                            cout << "  Maximum number of courses reached..." << endl;
+                            cout << "  Please enter again..." << endl;
+                            step--;
+                            cout << "  "; system("pause");
+                        }
+                        else
+                        {
+                            newIndex = trimester[semester].course_num;
+                            step++;
                         }
                     }
-                    header += "  Course Gred : " + gred + "\n";
-                    step++;
-                }
-            }
-            else if (step == 5)
-            {
-                if (getNum("  Enter study year" + prompt, year, 1, MAX_TRIMESTER/3, loop))
-                {
-                    header += "  Study year  : " + to_string(year) + "\n";
-                    step++;
-                }
-            }
-            else if (step == 6)
-            {
-                if(getNum("  Enter trimester number" + prompt, semester, 1, 3, loop))
-                {
-                    semester = (year - 1) * 3 + semester - 1;
-                    if (semester > trimester_num + 1)
+                    break;
+
+                case 7:
+                    if (!update_info)
                     {
-                        header = header.substr(0, header.size() - 18);
-                        cout << "  Out of range..." << endl;
-                        cout << "  Maximum study year is: 5, maximum trimester in each year is: 3" << endl;
-                        cout << "  Please enter again..." << endl;
-                        step--;
-                        cout << "  "; system("pause");
-                    }
-                    else if (semester != 0 && trimester[semester - 1].course_num == 0)
-                    {
-                        header = header.substr(0, header.size() - 18);
-                        cout << "  Please enter the course information for the previous trimester first." << endl;
-                        cout << "  Please enter again..." << endl;
-                        step--;
-                        cout << "  "; system("pause");
-                    }
-                    else if (trimester[semester].course_num == MAX_COURSES)
-                    {
-                        header = header.substr(0, header.size() - 18);
-                        cout << "  Maximum number of courses reached..." << endl;
-                        cout << "  Please enter again..." << endl;
-                        step--;
-                        cout << "  "; system("pause");
-                    }
-                    else
-                    {
-                        newIndex = trimester[semester].course_num;
-                        header += "  Trimester   : " + to_string(semester) + "\n";
                         if (semester > trimester_num)
                         {
                             trimester_num = semester;
                         }
-                        step++;
+                        trimester[semester].course_num++;
                     }
-                }
-            }
-            else if (step == 7)
-            {
-                if (!update_info)
-                {
-                    trimester[semester].course_num++;
-                }
-                trimester[semester].course[newIndex].name = course_name;
-                trimester[semester].course[newIndex].code = course_code;
-                trimester[semester].course[newIndex].gred = gred;
-                trimester[semester].course[newIndex].updateAll();
-                trimester[semester].update();
-                update();
-                system("cls");
-                printStudent(page);
-                cout << "  Course information successfully updated !" << endl;
-                loop = false;
-                cout << "  "; system("pause");
+                    trimester[semester].course[newIndex].name = course_name;
+                    trimester[semester].course[newIndex].code = course_code;
+                    trimester[semester].course[newIndex].gred = gred;
+                    trimester[semester].course[newIndex].updateAll();
+                    trimester[semester].update();
+                    update();
+                    system("cls");
+                    printStudent(page);
+                    cout << "  Course information successfully updated !" << endl;
+                    loop = false;
+                    cout << "  "; system("pause");
+                    break;
             }
         } while (loop);
     }
@@ -517,7 +506,7 @@ struct People {
                 }
                 else
                 {
-                    i = i % MAX_COURSES;
+                    i %= MAX_COURSES;
                     // double comfirm
                     while (loop)
                     {
@@ -655,15 +644,14 @@ int main(void) {
     readCourseFile("course_list.txt", students, student_num);
     // Start the program
 
-    list(students, student_num);
     bool exit = false;
     while (!exit) {
        mainMenu(students, lecturers, student_num, lecturer_num, exit);
     }
 
-    writeFile("students_list_output.txt", students, student_num);
-    writeFile("lecturer_list_output.txt", lecturers, lecturer_num);
-    writeCourseFile("course_list_output.txt", students, student_num);
+    writeFile("students_list.txt", students, student_num);
+    writeFile("lecturer_list.txt", lecturers, lecturer_num);
+    writeCourseFile("course_list.txt", students, student_num);
     cout << "  All changes are saved." << endl;
     cout << "  "; system("pause");
     return 0;
@@ -683,9 +671,10 @@ void readBanner (string filename, string& output) {
         }
     }
     else {
-        cout << "  Banner file is not found, please check if all folder is exist" << endl;
+        cout << "  " << filename << " is not found, please check if all folder is exist" << endl;
         system("pause");
     }
+    file.close();
 }
 
 /**
@@ -1117,7 +1106,10 @@ void trim(string& str) {
 }
 
 int roundUp(int dividend, int divisor) {
-    if (dividend % divisor == 0) {
+    if (dividend == 0) {
+        return 1;
+    }
+    else if (dividend % divisor == 0) {
         return dividend / divisor;
     }
     else {
@@ -1147,6 +1139,7 @@ void searchPeople(People people[], int total, string type, bool admin) {
         system("cls");
         cout << search_result;
         view(people, result, search_result_num, type, page, type=="Student", admin);
+        cout << endl;
         cout << "  0. Back" << endl;
         cout << endl;
         cout << "  Please enter your option : ";

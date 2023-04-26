@@ -270,3 +270,6 @@ UCCE1073|Digital Circuits And Devices|C
 UCCN2043|Digital Communications|C-
 UCCE2103|Digital Signal Processing|B
 UCCE2023|Digital Systems Design|C
+0
+0
+0
